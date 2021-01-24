@@ -1,0 +1,53 @@
+@keyframes fighterAnimation {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: 320px;
+  }
+}
+
+@keyframes destroyerAnimation {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: 1152px;
+  }
+}
+
+@keyframes bomberAnimation {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: 512px;
+  }
+}
+
+@keyframes commanderShipAnimation {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: 450px;
+  }
+}
+
+@keyframes commanderShipAnimationRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes starDestroyerAnimation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

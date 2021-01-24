@@ -1,4 +1,10 @@
 import { BindToHtml } from "./BindToHtml.js";
+import {
+  visibilityOfLayers,
+  HIDDEN_LAYER,
+  VISIBLE_LAYER,
+} from "./VisibilityOfLayers.js";
+import { game } from "./Game.js";
 
 const MAIN_MENU_LAYER_ID = "main-menu-layer";
 const NEW_GAME_BUTTON_ID = "new-game-main-menu";
@@ -22,7 +28,8 @@ class MainMenu extends BindToHtml {
   #newGameButtonHandle() {
     const button = this.bindById(NEW_GAME_BUTTON_ID);
     button.addEventListener("click", () => {
-      console.log("works");
+      visibilityOfLayers.changeVisibilityOfLayer(this.layer, HIDDEN_LAYER);
+      visibilityOfLayers.changeVisibilityOfLayer(game.layer, VISIBLE_LAYER);
     });
   }
 

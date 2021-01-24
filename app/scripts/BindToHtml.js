@@ -1,6 +1,6 @@
 export class BindToHtml {
   constructor(id) {
-    this.element = this.bindById(id);
+    this.layer = this.bindById(id);
   }
 
   bindById(id) {

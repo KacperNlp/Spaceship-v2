@@ -11,11 +11,14 @@ html {
   font-size: $fontSize;
   font-family: $fontFamily;
   color: $fontColor;
+  overflow: hidden;
 }
 
 @import "main-menu";
 @import "buttons";
 @import "game";
+@import "animations";
+@import "enemies";
 
 //layers
 .layer {
