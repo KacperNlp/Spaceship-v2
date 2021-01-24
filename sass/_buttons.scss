@@ -1,0 +1,18 @@
+.button {
+  padding: 20px 40px;
+  outline: hidden;
+  cursor: pointer;
+  border: $border;
+  color: $fontColor;
+  font-family: $fontFamily;
+  font-size: 2rem;
+  letter-spacing: 2px;
+  background: transparent;
+  transition: 0.3s;
+
+  &:hover {
+    color: $siteBackground;
+    background: $fontColor;
+    border-color: #fff;
+  }
+}

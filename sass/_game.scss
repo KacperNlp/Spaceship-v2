@@ -1,0 +1,50 @@
+.game-map {
+  background-image: url("../assets/Background/background.jpg");
+  animation: backgroundAnimation 60s infinite alternate linear;
+}
+
+@keyframes backgroundAnimation {
+  from {
+    background-position-y: 0;
+  }
+  to {
+    background-position-y: 1920px;
+  }
+}
+
+.player-stats {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+  width: 500px;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.5);
+  border-bottom: 3px solid black;
+  border-right: 3px solid black;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 33%;
+    height: 100%;
+    font-size: 1.6rem;
+  }
+
+  &__stat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 1.4rem;
+  }
+
+  &__points {
+    margin-left: 10px;
+  }
+}

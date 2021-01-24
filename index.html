@@ -5,10 +5,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spaceship</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"
+        integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style/main.min.css">
 </head>
 
 <body>
+    <!--main menu-->
+    <section id="main-menu-layer" class="layer main-menu">
+        <h1 class="main-menu__hight-score">Highest score: <span id="main-menu-highest-score">0</span></h1>
+        <div class="main-menu__buttons-container">
+            <button class="button" id="new-game-main-menu">New Game</button>
+            <button class="button" id="settings-main-menu">Settings</button>
+        </div>
+    </section>
 
+    <!--game-->
+    <main id="game" class="hidden">
+        <div class="game-map layer" id="game-layer"></div>
+        <!--Stats-->
+        <div class="player-stats">
+            <div class="player-stats__container">
+                <p>Lives: </p>
+                <p class="player-stats__stat">
+                    <span class="fas fa-heart"></span><span class="player-stats__points" id="player-lives">3</span>
+                </p>
+            </div>
+            <div class="player-stats__container">
+                <p>Score: </p>
+                <p class="player-stats__stat">
+                    <span class="fas fa-award"></span><span class="player-stats__points" id="player-score">0</span>
+                </p>
+            </div>
+            <div class="player-stats__container">
+                <p>Wallet: </p>
+                <p class="player-stats__stat">
+                    <span class="far fa-gem"></span><span class="player-stats__points" id="player-diamonds">0</span>
+                </p>
+            </div>
+        </div>
+    </main>
 </body>
 
 </html>

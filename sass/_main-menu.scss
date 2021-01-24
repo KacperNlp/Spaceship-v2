@@ -1,0 +1,55 @@
+.main-menu {
+  &__hight-score {
+    position: absolute;
+    left: 50%;
+    top: 80px;
+    transform: translateX(-50%);
+    padding: 30px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 8rem;
+    text-shadow: 0 0 20px $fontColor;
+    border-left: $border;
+    border-right: $border;
+    overflow: hidden;
+    cursor: default;
+
+    &::before,
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 5px;
+      background: $fontColor;
+      animation: hightScoreAnimation 3s infinite;
+    }
+
+    &::before {
+      top: 0;
+      left: 0;
+    }
+
+    &::after {
+      bottom: 0;
+      left: 0;
+    }
+  }
+
+  &__buttons-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 200px;
+  }
+}
+
+@keyframes hightScoreAnimation {
+  from {
+    left: -100%;
+  }
+  to {
+    left: 100%;
+  }
+}
