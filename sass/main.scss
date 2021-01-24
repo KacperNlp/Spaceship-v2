@@ -33,6 +33,13 @@ html {
   align-items: center;
 }
 
+.player-ship {
+  width: 64px;
+  height: 64px;
+  position: absolute;
+  background-image: url("../assets/player/tier1.png");
+}
+
 .hidden {
   display: none;
 }

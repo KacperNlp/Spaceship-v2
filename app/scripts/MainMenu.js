@@ -30,6 +30,7 @@ class MainMenu extends BindToHtml {
     button.addEventListener("click", () => {
       visibilityOfLayers.changeVisibilityOfLayer(this.layer, HIDDEN_LAYER);
       visibilityOfLayers.changeVisibilityOfLayer(game.layer, VISIBLE_LAYER);
+      game.newGame();
     });
   }
 
