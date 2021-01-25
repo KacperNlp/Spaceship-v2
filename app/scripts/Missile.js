@@ -29,6 +29,8 @@ export class Missile {
   #missileMove = () => {
     this.posY -= MISSILE_SPEED;
     this.element.style.top = `${this.posY}px`;
+
+    this.#checksIsMissileOutsideMap();
   };
 
   displayMissile() {
@@ -38,5 +40,11 @@ export class Missile {
 
   #removeInterval() {
     clearInterval(this.interval);
+  }
+
+  #checksIsMissileOutsideMap() {
+    if (this.posY < -MISSILE_SIZE) {
+      this.displayMissile();
+    }
   }
 }

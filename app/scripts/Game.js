@@ -1,5 +1,6 @@
 import { BindToHtml } from "./BindToHtml.js";
 import { Player } from "./Player.js";
+import { enemies } from "./Enemies.js";
 
 const GAME_LAYER_ID = "game";
 const GAME_MAP_ID = "game-map";
@@ -14,6 +15,7 @@ class Game extends BindToHtml {
   }
 
   newGame() {
+    enemies.createEnemy();
     this.#player = new Player();
   }
 }
