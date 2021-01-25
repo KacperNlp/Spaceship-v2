@@ -1,9 +1,13 @@
 import { BindToHtml } from "./BindToHtml.js";
 import { Player } from "./Player.js";
 import { enemies } from "./Enemies.js";
+import { GameState } from "./GameState.js";
 
 const GAME_LAYER_ID = "game";
 const GAME_MAP_ID = "game-map";
+const PLAYER_LIVES_CONTAINER_ID = "player-lives";
+const PLAYER_SCORE_CONTAINER_ID = "player-score";
+const PLAYER_WALLET_CONTAINER_ID = "player-diamonds";
 
 class Game extends BindToHtml {
   #player = null;
@@ -17,6 +21,25 @@ class Game extends BindToHtml {
   newGame() {
     enemies.createEnemy();
     this.#player = new Player();
+    this.#gameState = new GameState();
+
+    this.#renderGameMap();
+  }
+
+  #renderGameMap = () => {
+    this.#updatePlayerStats();
+
+    requestAnimationFrame(this.#renderGameMap);
+  };
+
+  #updatePlayerStats() {
+    const livesContainer = this.bindById(PLAYER_LIVES_CONTAINER_ID);
+    const pointsContainer = this.bindById(PLAYER_SCORE_CONTAINER_ID);
+    const walletContainer = this.bindById(PLAYER_WALLET_CONTAINER_ID);
+
+    livesContainer.textContent = this.#gameState.lives;
+    pointsContainer.textContent = this.#gameState.points;
+    walletContainer.textContent = this.#gameState.diamonds;
   }
 }
 

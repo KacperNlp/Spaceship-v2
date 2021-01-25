@@ -39,7 +39,7 @@ export class Missile {
     this.#checksIsMissileOutsideMap();
   };
 
-  displayMissile() {
+  deleteMissile() {
     this.element.remove();
     this.#removeInterval();
   }
@@ -51,7 +51,7 @@ export class Missile {
   #checksIsMissileOutsideMap() {
     const { innerHeight } = window;
     if (this.posY < -MISSILE_SIZE || innerHeight + MISSILE_SIZE < this.posY) {
-      this.displayMissile();
+      this.deleteMissile();
     }
   }
 }

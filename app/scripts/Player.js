@@ -94,7 +94,7 @@ export class Player {
   #shot() {
     const posY = this.ship.offsetTop - MISSILE_SIZE;
     const posX = this.posX + (SHIP_SIZE - MISSILE_SIZE) / 2;
-    const missile = new Missile(posX, posY, MISSILE_CLASS);
+    const missile = new Missile(posX, posY, PLAYER_MISSILE_CLASS);
     this.missiles.push(missile);
   }
 }

@@ -32,5 +32,22 @@ export class Bomb {
     }
 
     this.element.style.top = `${this.posY}px`;
+    this.#checksIsBombOutsideMap();
   };
+
+  deleteBomb() {
+    this.element.remove();
+    this.#removeInterval();
+  }
+
+  #removeInterval() {
+    clearInterval(this.interval);
+  }
+
+  #checksIsBombOutsideMap() {
+    const { innerHeight } = window;
+    if (this.posY < -BOMB_SIZE || innerHeight + BOMB_SIZE < this.posY) {
+      this.deleteBomb();
+    }
+  }
 }
