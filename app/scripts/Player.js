@@ -1,5 +1,8 @@
+import { Missile } from "./Missile.js";
+import { game } from "./Game.js";
+
 const PLAYER_SHIP_ID = "player";
-const SHIP_SIZE = 64;
+export const SHIP_SIZE = 64;
 const POSITION_FROM_BOTTOM = 50;
 const SHIP_SPEED = 10;
 
@@ -59,6 +62,14 @@ export class Player {
         case 39:
           this.movement.rightArrow = false;
           break;
+
+        case 32:
+          this.#shot();
+          break;
+
+        case 38:
+          this.#shot();
+          break;
       }
     });
   }
@@ -78,4 +89,10 @@ export class Player {
 
     requestAnimationFrame(this.#shipMovesRightLeft);
   };
+
+  #shot() {
+    const posY = this.ship.offsetTop;
+    const missile = new Missile(this.posX, posY, game.gameMap);
+    this.missiles.push(missile);
+  }
 }

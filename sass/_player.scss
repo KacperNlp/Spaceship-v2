@@ -1,0 +1,13 @@
+.player-ship {
+  width: 64px;
+  height: 64px;
+  position: absolute;
+  background-image: url("../assets/player/tier1.png");
+}
+
+.missile {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-image: url("../assets/allies/bullet/bullet-blue.png");
+}

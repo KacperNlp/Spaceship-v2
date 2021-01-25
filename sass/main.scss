@@ -19,6 +19,7 @@ html {
 @import "game";
 @import "animations";
 @import "enemies";
+@import "player";
 
 //layers
 .layer {
@@ -31,13 +32,6 @@ html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.player-ship {
-  width: 64px;
-  height: 64px;
-  position: absolute;
-  background-image: url("../assets/player/tier1.png");
 }
 
 .hidden {
