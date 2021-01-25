@@ -1,9 +1,10 @@
-import { Missile } from "./Missile.js";
+import { Missile, MISSILE_SIZE } from "./Missile.js";
 import { game } from "./Game.js";
 
+export const PLAYER_MISSILE_CLASS = "missile";
 const PLAYER_SHIP_ID = "player";
-export const SHIP_SIZE = 64;
 const POSITION_FROM_BOTTOM = 50;
+export const SHIP_SIZE = 64;
 const SHIP_SPEED = 10;
 
 export class Player {
@@ -91,8 +92,9 @@ export class Player {
   };
 
   #shot() {
-    const posY = this.ship.offsetTop;
-    const missile = new Missile(this.posX, posY, game.gameMap);
+    const posY = this.ship.offsetTop - MISSILE_SIZE;
+    const posX = this.posX + (SHIP_SIZE - MISSILE_SIZE) / 2;
+    const missile = new Missile(posX, posY, MISSILE_CLASS);
     this.missiles.push(missile);
   }
 }

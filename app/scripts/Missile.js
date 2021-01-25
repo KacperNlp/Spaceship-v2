@@ -1,33 +1,39 @@
 import { tagsGenerator } from "./TagsGenerator.js";
-import { SHIP_SIZE } from "./Player.js";
+import { SHIP_SIZE, PLAYER_MISSILE_CLASS } from "./Player.js";
+import { ENEMY_MISSILE_CLASS } from "./Enemy.js";
+import { game } from "./Game.js";
 
 const ANIMATION_SPEED = 30;
-const MISSILE_CLASS = "missile";
 const MISSILE_SPEED = 10;
-const MISSILE_SIZE = 15;
+export const MISSILE_SIZE = 15;
 
 export class Missile {
-  constructor(posX, posY, container) {
-    this.container = container;
+  constructor(posX, posY, missleClass) {
     this.element = null;
-    this.posX = posX + (SHIP_SIZE - MISSILE_SIZE) / 2;
-    this.posY = posY - MISSILE_SIZE;
+    this.missleClass = missleClass;
     this.interval = null;
+    this.posX = posX;
+    this.posY = posY;
     this.#init();
   }
 
   #init() {
     this.element = tagsGenerator.createTag("div");
-    this.element.classList.add(MISSILE_CLASS);
+    this.element.classList.add(this.missleClass);
     this.element.style.left = `${this.posX}px`;
     this.element.style.top = `${this.posY}px`;
 
-    this.container.appendChild(this.element);
+    game.gameMap.appendChild(this.element);
     this.interval = setInterval(this.#missileMove, ANIMATION_SPEED);
   }
 
   #missileMove = () => {
-    this.posY -= MISSILE_SPEED;
+    if (this.missleClass === PLAYER_MISSILE_CLASS) {
+      this.posY -= MISSILE_SPEED;
+    } else if (this.missleClass === ENEMY_MISSILE_CLASS) {
+      this.posY += MISSILE_SPEED;
+    }
+
     this.element.style.top = `${this.posY}px`;
 
     this.#checksIsMissileOutsideMap();
@@ -43,7 +49,8 @@ export class Missile {
   }
 
   #checksIsMissileOutsideMap() {
-    if (this.posY < -MISSILE_SIZE) {
+    const { innerHeight } = window;
+    if (this.posY < -MISSILE_SIZE || innerHeight + MISSILE_SIZE < this.posY) {
       this.displayMissile();
     }
   }

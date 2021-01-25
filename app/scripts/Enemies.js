@@ -21,7 +21,7 @@ const KIND_OF_ENEMIES = {
     prizeForDestroy: 1,
     pointsForDestroy: 1,
   },
-  destoryer: {
+  destroyer: {
     shipClass: "enemy-destroyer",
     explosionClass: "",
     size: 128,
@@ -60,29 +60,34 @@ class Enemies {
 
   createEnemy() {
     const randomNumber = Math.floor(Math.random() * RATE_OF_DRAW + 1);
-    const { fighter, destoryer, bomber, commanderShip } = KIND_OF_ENEMIES;
+    const { fighter, destroyer, bomber, commanderShip } = KIND_OF_ENEMIES;
     let enemy;
+    let type;
 
     if (
       randomNumber >= fighter.chancesToDraw[0] &&
       randomNumber <= fighter.chancesToDraw[1]
     ) {
-      enemy = new Enemy(fighter);
+      type = "fighter";
+      enemy = new Enemy(fighter, type);
     } else if (
-      randomNumber >= destoryer.chancesToDraw[0] &&
-      randomNumber <= destoryer.chancesToDraw[1]
+      randomNumber >= destroyer.chancesToDraw[0] &&
+      randomNumber <= destroyer.chancesToDraw[1]
     ) {
-      enemy = new Enemy(destoryer);
+      type = "destroyer";
+      enemy = new Enemy(destroyer, type);
     } else if (
       randomNumber >= bomber.chancesToDraw[0] &&
       randomNumber <= bomber.chancesToDraw[1]
     ) {
-      enemy = new Enemy(bomber);
+      type = "bomber";
+      enemy = new Enemy(bomber, type);
     } else if (
       randomNumber >= commanderShip.chancesToDraw[0] &&
       randomNumber <= commanderShip.chancesToDraw[1]
     ) {
-      enemy = new Enemy(commanderShip);
+      type = "commanderShip";
+      enemy = new Enemy(commanderShip, type);
     }
 
     this.allEnemies.push(enemy);
