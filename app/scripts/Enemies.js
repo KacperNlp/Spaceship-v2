@@ -56,6 +56,7 @@ const RATE_OF_DRAW = 100;
 class Enemies {
   constructor() {
     this.allEnemies = [];
+    this.enemiesBombs = [];
   }
 
   createEnemy() {

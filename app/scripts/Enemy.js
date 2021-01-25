@@ -1,6 +1,8 @@
 import { tagsGenerator } from "./TagsGenerator.js";
 import { game } from "./Game.js";
 import { Missile, MISSILE_SIZE } from "./Missile.js";
+import { Bomb, BOMB_SIZE } from "./Bomb.js";
+import { enemies } from "./Enemies.js";
 
 const ENEMY_TYPES = [
   "fighter",
@@ -10,6 +12,7 @@ const ENEMY_TYPES = [
   "starDestroyer",
 ];
 export const ENEMY_MISSILE_CLASS = "enemy-missile";
+export const ENEMY_BOMB_CLASS = "enemy-bomb";
 
 export class Enemy {
   constructor(
@@ -76,6 +79,8 @@ export class Enemy {
   #skillForEnemyByType() {
     if (this.type === ENEMY_TYPES[0]) {
       setInterval(this.#fighterShot, 2000);
+    } else if (this.type === ENEMY_TYPES[1]) {
+      setInterval(this.#plantBomb, 2000);
     } else if (this.type === ENEMY_TYPES[2]) {
       setInterval(this.#destroyerDoubleShot, 2000);
     }
@@ -98,6 +103,15 @@ export class Enemy {
 
     this.#shot(firstPosX, posY);
     this.#shot(secondPosX, posY);
+  };
+
+  #plantBomb = () => {
+    const { size } = this.ship;
+    const posX = this.posX + (size - BOMB_SIZE) / 2;
+    const posY = this.posY;
+
+    const bomb = new Bomb(posX, posY, ENEMY_BOMB_CLASS);
+    enemies.enemiesBombs.push(bomb);
   };
 
   #shot(posX, posY) {

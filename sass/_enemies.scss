@@ -6,6 +6,7 @@
     background-image: url("../assets/enemies/fighter/fighter-sprite.png");
     transform: rotate(180deg);
     animation: fighterAnimation 0.2s steps(5) infinite;
+    z-index: 4;
   }
 
   &-destroyer {
@@ -15,6 +16,7 @@
     background-image: url("../assets/enemies/destroyer/destoryer-sprite.png");
     transform: rotate(180deg);
     animation: destroyerAnimation 0.3s steps(9) infinite;
+    z-index: 2;
   }
 
   &-bomber {
@@ -24,6 +26,7 @@
     background-image: url("../assets/enemies/bomber/bomber-sprite.png");
     transform: rotate(180deg);
     animation: bomberAnimation 0.3s steps(8) infinite;
+    z-index: 4;
   }
 
   &-commander-ship {
@@ -34,6 +37,7 @@
     transform: rotate(180deg);
     animation: commanderShipAnimation 1s steps(3) infinite,
       commanderShipAnimationRotate 12s linear infinite;
+    z-index: 3;
   }
 
   &-star-destroyer {
@@ -43,6 +47,7 @@
     background-image: url("../assets/enemies/star-destroyer/star-destroyer.png");
     transform: rotate(180deg);
     animation: starDestroyerAnimation 10s linear infinite;
+    z-index: 1;
   }
 
   &-missile {
@@ -51,5 +56,16 @@
     height: 15px;
     background-image: url("../assets/enemies/bullet/bullet_red.png");
     transform: rotate(180deg);
+    z-index: 2;
+  }
+
+  &-bomb {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-image: url("../assets/enemies/bomb/bomb-sprite.png");
+    animation: bombAnimation 1s steps(2) infinite,
+      bombRotateAnimation 40s linear infinite;
+    z-index: 2;
   }
 }
