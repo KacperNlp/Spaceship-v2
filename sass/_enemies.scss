@@ -24,6 +24,7 @@
     background-image: url("../assets/enemies/destroyer/destoryer-sprite.png");
     transform: rotate(180deg);
     animation: destroyerAnimation 0.3s steps(9) infinite;
+    z-index: 2;
     &--explosion {
       width: 128px;
       height: 128px;
@@ -106,5 +107,13 @@
     animation: bombAnimation 1s steps(2) infinite,
       bombRotateAnimation 40s linear infinite;
     z-index: 2;
+
+    &--explosion {
+      width: 64px;
+      height: 64px;
+      position: absolute;
+      background-image: url("../assets/enemies/explosions/small-explosion.png");
+      animation: smallExplosion 1s steps(17) forwards;
+    }
   }
 }

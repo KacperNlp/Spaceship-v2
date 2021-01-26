@@ -2,6 +2,8 @@ export class GameState {
   #lives = 3;
   #points = 0;
   #diamonds = 0;
+  #timeToRenderNewEnemy = 2000;
+  #requireScoreToNextLevel = 50;
 
   get lives() {
     return this.#lives;
@@ -37,5 +39,23 @@ export class GameState {
 
   increaseDiamonds(value) {
     this.#diamonds += value;
+  }
+
+  get timeToRenderNewEnemy() {
+    return this.#timeToRenderNewEnemy;
+  }
+
+  decreaseTimeToRenderNewEnemy() {
+    if (this.#timeToRenderNewEnemy > 400) {
+      this.#timeToRenderNewEnemy -= 100;
+    }
+  }
+
+  get requireScoreToNextLevel() {
+    return this.#requireScoreToNextLevel;
+  }
+
+  updateRequireScoreToNextLevel() {
+    this.#requireScoreToNextLevel += 100;
   }
 }

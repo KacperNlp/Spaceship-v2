@@ -13,6 +13,7 @@ const ENEMY_TYPES = [
 ];
 export const ENEMY_MISSILE_CLASS = "enemy-missile";
 export const ENEMY_BOMB_CLASS = "enemy-bomb";
+const ENEMY_EXPLOSION_BOMB_CLASS = "enemy-bomb--explosion";
 const TIMER_OF_EXPLOSION_ANIMATION = 1000;
 
 export class Enemy {
@@ -112,7 +113,12 @@ export class Enemy {
     const posX = this.posX + (size - BOMB_SIZE) / 2;
     const posY = this.posY;
 
-    const bomb = new Bomb(posX, posY, ENEMY_BOMB_CLASS);
+    const bomb = new Bomb(
+      posX,
+      posY,
+      ENEMY_BOMB_CLASS,
+      ENEMY_EXPLOSION_BOMB_CLASS
+    );
     enemies.enemiesBombs.push(bomb);
   };
 

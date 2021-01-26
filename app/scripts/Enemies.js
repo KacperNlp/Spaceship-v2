@@ -59,8 +59,7 @@ class Enemies {
     this.enemiesBombs = [];
   }
 
-  createEnemy() {
-    const en = new Enemy(KIND_OF_ENEMIES.starDestroyer, "starDestroyer");
+  createEnemy = () => {
     const randomNumber = Math.floor(Math.random() * RATE_OF_DRAW + 1);
     const { fighter, destroyer, bomber, commanderShip } = KIND_OF_ENEMIES;
     let enemy;
@@ -93,7 +92,12 @@ class Enemies {
     }
 
     this.allEnemies.push(enemy);
-    this.allEnemies.push(en);
+  };
+
+  createStarDestroyer() {
+    const { starDestroyer } = KIND_OF_ENEMIES;
+    const enemy = new Enemy(starDestroyer, "star-destroyer");
+    this.allEnemies.push(enemy);
   }
 }
 
