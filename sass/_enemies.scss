@@ -7,6 +7,14 @@
     transform: rotate(180deg);
     animation: fighterAnimation 0.2s steps(5) infinite;
     z-index: 4;
+
+    &--explosion {
+      width: 64px;
+      height: 64px;
+      position: absolute;
+      background-image: url("../assets/enemies/explosions/small-explosion.png");
+      animation: smallExplosion 1s steps(17) forwards;
+    }
   }
 
   &-destroyer {
@@ -16,7 +24,13 @@
     background-image: url("../assets/enemies/destroyer/destoryer-sprite.png");
     transform: rotate(180deg);
     animation: destroyerAnimation 0.3s steps(9) infinite;
-    z-index: 2;
+    &--explosion {
+      width: 128px;
+      height: 128px;
+      position: absolute;
+      background-image: url("../assets/enemies/explosions/destroyer-explosion.png");
+      animation: mediumExplosion 1s steps(17) forwards;
+    }
   }
 
   &-bomber {
@@ -27,6 +41,14 @@
     transform: rotate(180deg);
     animation: bomberAnimation 0.3s steps(8) infinite;
     z-index: 4;
+
+    &--explosion {
+      width: 64px;
+      height: 64px;
+      position: absolute;
+      background-image: url("../assets/enemies/explosions/small-explosion.png");
+      animation: smallExplosion 1s steps(17) forwards;
+    }
   }
 
   &-commander-ship {
@@ -38,6 +60,14 @@
     animation: commanderShipAnimation 1s steps(3) infinite,
       commanderShipAnimationRotate 12s linear infinite;
     z-index: 3;
+
+    &--explosion {
+      width: 128px;
+      height: 128px;
+      position: absolute;
+      background-image: url("../assets/enemies/explosions/destroyer-explosion.png");
+      animation: mediumExplosion 1s steps(17) forwards;
+    }
   }
 
   &-star-destroyer {
@@ -45,9 +75,18 @@
     height: 350px;
     position: absolute;
     background-image: url("../assets/enemies/star-destroyer/star-destroyer.png");
+    background-size: cover;
     transform: rotate(180deg);
     animation: starDestroyerAnimation 10s linear infinite;
     z-index: 1;
+
+    &--explosion {
+      width: 350px;
+      height: 350px;
+      position: absolute;
+      background-image: url("../assets/enemies/explosions/big_explosion.png");
+      animation: starDestroyerExplosion 1s steps(17) forwards;
+    }
   }
 
   &-missile {

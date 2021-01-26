@@ -13,6 +13,7 @@ const ENEMY_TYPES = [
 ];
 export const ENEMY_MISSILE_CLASS = "enemy-missile";
 export const ENEMY_BOMB_CLASS = "enemy-bomb";
+const TIMER_OF_EXPLOSION_ANIMATION = 1000;
 
 export class Enemy {
   constructor(
@@ -29,6 +30,7 @@ export class Enemy {
   ) {
     this.element = null;
     this.interval = null;
+    this.skillInterval = null;
     this.posX = null;
     this.posY = null;
     this.ship = {
@@ -78,11 +80,11 @@ export class Enemy {
 
   #skillForEnemyByType() {
     if (this.type === ENEMY_TYPES[0]) {
-      setInterval(this.#fighterShot, 2000);
+      this.skillInterval = setInterval(this.#fighterShot, 2000);
     } else if (this.type === ENEMY_TYPES[1]) {
-      setInterval(this.#plantBomb, 2000);
+      this.skillInterval = setInterval(this.#plantBomb, 2000);
     } else if (this.type === ENEMY_TYPES[2]) {
-      setInterval(this.#destroyerDoubleShot, 2000);
+      this.skillInterval = setInterval(this.#destroyerDoubleShot, 2000);
     }
   }
 
@@ -117,5 +119,27 @@ export class Enemy {
   #shot(posX, posY) {
     const missile = new Missile(posX, posY, ENEMY_MISSILE_CLASS);
     this.enemySkills.missiles.push(missile);
+  }
+
+  explosionOfEnemyShip() {
+    const { shipClass, explosionClass } = this.ship;
+    this.element.classList.remove(shipClass);
+    this.element.classList.add(explosionClass);
+    this.#stopAnimate();
+    setTimeout(() => this.#removeEnemy(), TIMER_OF_EXPLOSION_ANIMATION);
+  }
+
+  enemyIsOutsideMap() {
+    this.#removeEnemy();
+    this.#stopAnimate();
+  }
+
+  #removeEnemy() {
+    this.element.remove();
+  }
+
+  #stopAnimate() {
+    clearInterval(this.skillInterval);
+    clearInterval(this.interval);
   }
 }

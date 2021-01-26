@@ -69,3 +69,32 @@
     transform: rotate(360deg);
   }
 }
+
+//explosions
+
+@keyframes smallExplosion {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -1088px;
+  }
+}
+
+@keyframes mediumExplosion {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -2176px;
+  }
+}
+
+@keyframes starDestroyerExplosion {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -5950px;
+  }
+}

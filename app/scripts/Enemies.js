@@ -3,7 +3,7 @@ import { Enemy } from "./Enemy.js";
 const KIND_OF_ENEMIES = {
   fighter: {
     shipClass: "enemy-fighter",
-    explosionClass: "",
+    explosionClass: "enemy-fighter--explosion",
     size: 64,
     hp: 1,
     chancesToDraw: [1, 40],
@@ -13,7 +13,7 @@ const KIND_OF_ENEMIES = {
   },
   bomber: {
     shipClass: "enemy-bomber",
-    explosionClass: "",
+    explosionClass: "enemy-bomber--explosion",
     size: 64,
     hp: 1,
     chancesToDraw: [41, 70],
@@ -23,7 +23,7 @@ const KIND_OF_ENEMIES = {
   },
   destroyer: {
     shipClass: "enemy-destroyer",
-    explosionClass: "",
+    explosionClass: "enemy-destroyer--explosion",
     size: 128,
     hp: 3,
     chancesToDraw: [66, 90],
@@ -33,7 +33,7 @@ const KIND_OF_ENEMIES = {
   },
   commanderShip: {
     shipClass: "enemy-commander-ship",
-    explosionClass: "",
+    explosionClass: "enemy-commander-ship--explosion",
     size: 150,
     hp: 10,
     chancesToDraw: [91, 100],
@@ -43,7 +43,7 @@ const KIND_OF_ENEMIES = {
   },
   starDestroyer: {
     shipClass: "enemy-star-destroyer",
-    explosionClass: "",
+    explosionClass: "enemy-star-destroyer--explosion",
     size: 350,
     hp: 50,
     speed: 1,
@@ -60,6 +60,7 @@ class Enemies {
   }
 
   createEnemy() {
+    const en = new Enemy(KIND_OF_ENEMIES.starDestroyer, "starDestroyer");
     const randomNumber = Math.floor(Math.random() * RATE_OF_DRAW + 1);
     const { fighter, destroyer, bomber, commanderShip } = KIND_OF_ENEMIES;
     let enemy;
@@ -92,6 +93,7 @@ class Enemies {
     }
 
     this.allEnemies.push(enemy);
+    this.allEnemies.push(en);
   }
 }
 
