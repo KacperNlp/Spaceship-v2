@@ -43,9 +43,6 @@ export class Enemy {
       prizeForDestroy,
       pointsForDestroy,
     };
-    this.enemySkills = {
-      missiles: [],
-    };
     this.type = type;
 
     this.#initEnemyProps();
@@ -124,7 +121,7 @@ export class Enemy {
 
   #shot(posX, posY) {
     const missile = new Missile(posX, posY, ENEMY_MISSILE_CLASS);
-    this.enemySkills.missiles.push(missile);
+    enemies.enemiesMissiles.push(missile);
   }
 
   explosionOfEnemyShip() {

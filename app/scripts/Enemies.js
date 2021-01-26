@@ -57,6 +57,7 @@ class Enemies {
   constructor() {
     this.allEnemies = [];
     this.enemiesBombs = [];
+    this.enemiesMissiles = [];
   }
 
   createEnemy = () => {

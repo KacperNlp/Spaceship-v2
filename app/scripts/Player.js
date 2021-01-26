@@ -3,7 +3,7 @@ import { game } from "./Game.js";
 
 export const PLAYER_MISSILE_CLASS = "missile";
 const PLAYER_SHIP_ID = "player";
-const POSITION_FROM_BOTTOM = 50;
+const POSITION_FROM_BOTTOM = 100;
 export const SHIP_SIZE = 64;
 const SHIP_SPEED = 10;
 
@@ -25,12 +25,13 @@ export class Player {
   }
 
   #setStartingPosition() {
-    const { innerWidth } = window;
+    const { innerWidth, innerHeight } = window;
 
     this.posX = (innerWidth + SHIP_SIZE) / 2;
+    this.posY = innerHeight - POSITION_FROM_BOTTOM;
 
     this.ship.style.left = `${this.posX}px`;
-    this.ship.style.bottom = `${POSITION_FROM_BOTTOM}px`;
+    this.ship.style.top = `${this.posY}px`;
   }
 
   #shipHandle() {

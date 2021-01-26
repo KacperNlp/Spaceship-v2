@@ -1,5 +1,5 @@
 import { BindToHtml } from "./BindToHtml.js";
-import { Player } from "./Player.js";
+import { Player, SHIP_SIZE } from "./Player.js";
 import { enemies } from "./Enemies.js";
 import { GameState } from "./GameState.js";
 import { MISSILE_SIZE } from "./Missile.js";
@@ -41,6 +41,7 @@ class Game extends BindToHtml {
     this.#updatePlayerStats();
     this.#checksPositionOfEnemies();
     this.#checksPositionsOfBombs();
+    this.#checksIsPlayerLostLive();
     this.#checksScoreToIncreaseDifficulty();
 
     requestAnimationFrame(this.#renderGameMap);
@@ -149,6 +150,12 @@ class Game extends BindToHtml {
     });
   }
 
+  #checksIsPlayerLostLive() {
+    this.#lostLiveByEnemyMissile();
+    this.#lostLiveByEnemyBomb();
+    //this.#enemyPassesPlayerDefense();
+  }
+
   //change difficulty means deacrease time to render enemy and create boss (huge ship - star destroyer)
   #checksScoreToIncreaseDifficulty() {
     const currentScore = this.#gameState.points;
@@ -164,6 +171,100 @@ class Game extends BindToHtml {
         this.#gameState.timeToRenderNewEnemy
       );
       enemies.createStarDestroyer();
+    }
+  }
+
+  #lostLiveByEnemyMissile() {
+    enemies.enemiesMissiles.forEach((missile, id, missiles) => {
+      const missilePosition = {
+        left: missile.posX,
+        right: missile.posX + MISSILE_SIZE,
+        bottom: missile.posY - MISSILE_SIZE,
+        top: missile.posY,
+      };
+
+      this.#isHit(missile, missilePosition, id, missiles);
+    });
+  }
+
+  #lostLiveByEnemyBomb() {
+    enemies.enemiesBombs.forEach((bomb, id, bombs) => {
+      const bombPosition = {
+        left: bomb.posX,
+        right: bomb.posX + BOMB_SIZE,
+        bottom: bomb.posY - BOMB_SIZE,
+        top: bomb.posY,
+      };
+
+      this.#stepOnBomb(bomb, bombPosition, id, bombs);
+    });
+  }
+
+  #isHit(enemyMissile, enemyMisslePositins, enemyMissleId, enemyMissiles) {
+    const {
+      left: enemyLeft,
+      right: enemyRight,
+      bottom: enemyBottom,
+      top: enemyTop,
+    } = enemyMisslePositins;
+
+    const playerPositions = {
+      left: this.#player.posX,
+      right: this.#player.posX + SHIP_SIZE,
+      bottom: this.#player.posY + SHIP_SIZE,
+      top: this.#player.posY,
+    };
+
+    const {
+      left: playerLeft,
+      right: playerRight,
+      bottom: playerBottom,
+      top: playerTop,
+    } = playerPositions;
+
+    if (
+      playerTop <= enemyBottom &&
+      playerBottom >= enemyTop &&
+      playerLeft <= enemyRight &&
+      playerRight >= enemyLeft
+    ) {
+      enemyMissile.deleteMissile();
+      enemyMissiles.splice(enemyMissleId, 1);
+      this.#gameState.decreaseLives();
+    }
+  }
+
+  #stepOnBomb(enemyBomb, enemyBombPositins, enemyBombId, enemyBombs) {
+    const {
+      left: enemyLeft,
+      right: enemyRight,
+      bottom: enemyBottom,
+      top: enemyTop,
+    } = enemyBombPositins;
+
+    const playerPositions = {
+      left: this.#player.posX,
+      right: this.#player.posX + SHIP_SIZE,
+      bottom: this.#player.posY + SHIP_SIZE,
+      top: this.#player.posY,
+    };
+
+    const {
+      left: playerLeft,
+      right: playerRight,
+      bottom: playerBottom,
+      top: playerTop,
+    } = playerPositions;
+
+    if (
+      playerTop <= enemyBottom &&
+      playerBottom >= enemyTop &&
+      playerLeft <= enemyRight &&
+      playerRight >= enemyLeft
+    ) {
+      enemyBomb.bombExplosion();
+      enemyBombs.splice(enemyBombId, 1);
+      this.#gameState.decreaseLives();
     }
   }
 }
