@@ -62,35 +62,25 @@ class Game extends BindToHtml {
       const { size } = enemy.ship;
 
       const enemyPosition = {
-        bottomLeft: enemy.posX,
-        bottomRight: enemy.posX + size,
-        bottom: enemy.posY + size,
+        enemyBottomLeft: enemy.posX,
+        enemyBottomRight: enemy.posX + size,
+        enemyBottom: enemy.posY + size,
       };
 
       this.#player.missiles.forEach((missile, missileId, missiles) => {
         const missilePosition = {
-          topLeft: missile.posX,
-          topRight: missile.posX + MISSILE_SIZE,
-          top: missile.posY,
+          missileTopLeft: missile.posX,
+          missileTopRight: missile.posX + MISSILE_SIZE,
+          missileTop: missile.posY,
         };
 
-        const {
-          bottom: enemyBottom,
-          bottomLeft: enemyLeft,
-          bottomRight: enemyRight,
-        } = enemyPosition;
-        const {
-          topRight: missileRight,
-          topLeft: missileLeft,
-          top: missileTop,
-        } = missilePosition;
+        const isHit = this.#checkPositionsOfMissileAndEnemyElement(
+          enemyPosition,
+          missilePosition
+        );
 
         //hit the enemy
-        if (
-          enemyBottom > missileTop &&
-          enemyLeft <= missileRight &&
-          enemyRight >= missileLeft
-        ) {
+        if (isHit) {
           missile.deleteMissile();
           missiles.splice(missileId, 1);
           enemy.ship.hp--;
@@ -111,35 +101,25 @@ class Game extends BindToHtml {
   #checksPositionsOfBombs() {
     enemies.enemiesBombs.forEach((bomb, bombId, bombs) => {
       const bombPosition = {
-        bottomLeft: bomb.posX,
-        bottomRight: bomb.posX + BOMB_SIZE,
-        bottom: bomb.posY + BOMB_SIZE,
+        enemyBottomLeft: bomb.posX,
+        enemyBottomRight: bomb.posX + BOMB_SIZE,
+        enemyBottom: bomb.posY + BOMB_SIZE,
       };
 
       this.#player.missiles.forEach((missile, missileId, missiles) => {
         const missilePosition = {
-          topLeft: missile.posX,
-          topRight: missile.posX + MISSILE_SIZE,
-          top: missile.posY,
+          missileTopLeft: missile.posX,
+          missileTopRight: missile.posX + MISSILE_SIZE,
+          missileTop: missile.posY,
         };
 
-        const {
-          bottom: bombBottom,
-          bottomLeft: bombLeft,
-          bottomRight: bombRight,
-        } = bombPosition;
-        const {
-          topRight: missileRight,
-          topLeft: missileLeft,
-          top: missileTop,
-        } = missilePosition;
+        const isHit = this.#checkPositionsOfMissileAndEnemyElement(
+          bombPosition,
+          missilePosition
+        );
 
         //hit the enemy
-        if (
-          bombBottom > missileTop &&
-          bombLeft <= missileRight &&
-          bombRight >= missileLeft
-        ) {
+        if (isHit) {
           missile.deleteMissile();
           missiles.splice(missileId, 1);
 
@@ -153,7 +133,7 @@ class Game extends BindToHtml {
   #checksIsPlayerLostLive() {
     this.#lostLiveByEnemyMissile();
     this.#lostLiveByEnemyBomb();
-    //this.#enemyPassesPlayerDefense();
+    this.#enemyPassesPlayerDefense();
   }
 
   //change difficulty means deacrease time to render enemy and create boss (huge ship - star destroyer)
@@ -177,95 +157,115 @@ class Game extends BindToHtml {
   #lostLiveByEnemyMissile() {
     enemies.enemiesMissiles.forEach((missile, id, missiles) => {
       const missilePosition = {
-        left: missile.posX,
-        right: missile.posX + MISSILE_SIZE,
-        bottom: missile.posY - MISSILE_SIZE,
-        top: missile.posY,
+        enemyLeft: missile.posX,
+        enemyRight: missile.posX + MISSILE_SIZE,
+        enemyBottom: missile.posY - MISSILE_SIZE,
+        enemyTop: missile.posY,
       };
 
-      this.#isHit(missile, missilePosition, id, missiles);
+      const playerShip = this.#takeAlliedShipPosition(this.#player, SHIP_SIZE);
+
+      const isHit = this.#checksPositionOfAlliedShipAndEnemyElement(
+        playerShip,
+        missilePosition
+      );
+
+      if (isHit) {
+        missile.deleteMissile();
+        missiles.splice(id, 1);
+        this.#gameState.decreaseLives();
+      }
     });
   }
 
   #lostLiveByEnemyBomb() {
     enemies.enemiesBombs.forEach((bomb, id, bombs) => {
       const bombPosition = {
-        left: bomb.posX,
-        right: bomb.posX + BOMB_SIZE,
-        bottom: bomb.posY + BOMB_SIZE,
-        top: bomb.posY,
+        enemyLeft: bomb.posX,
+        enemyRight: bomb.posX + BOMB_SIZE,
+        enemyBottom: bomb.posY + BOMB_SIZE,
+        enemyTop: bomb.posY,
       };
 
-      this.#stepOnBomb(bomb, bombPosition, id, bombs);
+      const playerShip = this.#takeAlliedShipPosition(this.#player, SHIP_SIZE);
+
+      const isHit = this.#checksPositionOfAlliedShipAndEnemyElement(
+        playerShip,
+        bombPosition
+      );
+
+      if (isHit) {
+        bomb.bombExplosion();
+        bombs.splice(id, 1);
+        this.#gameState.decreaseLives();
+      }
     });
   }
 
-  #isHit(enemyMissile, enemyMisslePositins, enemyMissleId, enemyMissiles) {
-    const {
-      left: enemyLeft,
-      right: enemyRight,
-      bottom: enemyBottom,
-      top: enemyTop,
-    } = enemyMisslePositins;
+  #enemyPassesPlayerDefense() {
+    enemies.allEnemies.forEach((enemy, id, enemies) => {
+      const { innerHeight } = window;
+      const { size } = enemy.ship;
 
-    const playerPositions = {
-      left: this.#player.posX,
-      right: this.#player.posX + SHIP_SIZE,
-      bottom: this.#player.posY + SHIP_SIZE,
-      top: this.#player.posY,
+      if (innerHeight < enemy.posY - size) {
+        enemies.splice(id, 1);
+        enemy.enemyIsOutsideMap();
+
+        //player lost live
+        this.#gameState.decreaseLives();
+      }
+    });
+  }
+
+  #takeAlliedShipPosition(ship, shipSize) {
+    const shipPosition = {
+      alliedShipLeft: ship.posX,
+      alliedShipRight: ship.posX + shipSize,
+      alliedShipBottom: ship.posY + shipSize,
+      alliedShipTop: ship.posY,
     };
 
-    const {
-      left: playerLeft,
-      right: playerRight,
-      bottom: playerBottom,
-      top: playerTop,
-    } = playerPositions;
+    return shipPosition;
+  }
 
+  //if player missile hit enemy this function will return true
+  #checkPositionsOfMissileAndEnemyElement(enemyPosition, missilePosition) {
+    const { enemyBottom, enemyBottomLeft, enemyBottomRight } = enemyPosition;
+    const { missileTopRight, missileTopLeft, missileTop } = missilePosition;
+
+    //hit the enemy
     if (
-      playerTop <= enemyBottom &&
-      playerBottom >= enemyTop &&
-      playerLeft <= enemyRight &&
-      playerRight >= enemyLeft
+      enemyBottom > missileTop &&
+      enemyBottomLeft <= missileTopRight &&
+      enemyBottomRight >= missileTopLeft
     ) {
-      enemyMissile.deleteMissile();
-      enemyMissiles.splice(enemyMissleId, 1);
-      this.#gameState.decreaseLives();
+      return true;
     }
   }
 
-  #stepOnBomb(enemyBomb, enemyBombPositins, enemyBombId, enemyBombs) {
+  //if enemy bomb or missile will hit player or allied ship
+  #checksPositionOfAlliedShipAndEnemyElement(alliedShip, enemyElementPosition) {
     const {
-      left: enemyLeft,
-      right: enemyRight,
-      bottom: enemyBottom,
-      top: enemyTop,
-    } = enemyBombPositins;
-
-    const playerPositions = {
-      left: this.#player.posX,
-      right: this.#player.posX + SHIP_SIZE,
-      bottom: this.#player.posY + SHIP_SIZE,
-      top: this.#player.posY,
-    };
-
+      alliedShipBottom,
+      alliedShipTop,
+      alliedShipLeft,
+      alliedShipRight,
+    } = alliedShip;
     const {
-      left: playerLeft,
-      right: playerRight,
-      bottom: playerBottom,
-      top: playerTop,
-    } = playerPositions;
+      enemyBottom,
+      enemyTop,
+      enemyRight,
+      enemyLeft,
+    } = enemyElementPosition;
 
+    //hit the enemy
     if (
-      playerTop <= enemyBottom &&
-      playerBottom >= enemyTop &&
-      playerLeft <= enemyRight &&
-      playerRight >= enemyLeft
+      alliedShipTop <= enemyBottom &&
+      alliedShipBottom >= enemyTop &&
+      alliedShipLeft <= enemyRight &&
+      alliedShipRight >= enemyLeft
     ) {
-      console.log(playerPositions, enemyBombPositins);
-      enemyBomb.bombExplosion();
-      enemyBombs.splice(enemyBombId, 1);
-      this.#gameState.decreaseLives();
+      return true;
     }
   }
 }
