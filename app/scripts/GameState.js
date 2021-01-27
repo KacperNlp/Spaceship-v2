@@ -2,7 +2,7 @@ export class GameState {
   #lives = 3;
   #points = 0;
   #diamonds = 0;
-  #timeToRenderNewEnemy = 2000;
+  #timeToRenderNewEnemy = 1200;
   #requireScoreToNextLevel = 50;
 
   get lives() {
@@ -46,7 +46,7 @@ export class GameState {
   }
 
   decreaseTimeToRenderNewEnemy() {
-    if (this.#timeToRenderNewEnemy > 400) {
+    if (this.#timeToRenderNewEnemy > 300) {
       this.#timeToRenderNewEnemy -= 100;
     }
   }
