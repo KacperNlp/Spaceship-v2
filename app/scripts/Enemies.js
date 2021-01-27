@@ -100,6 +100,12 @@ class Enemies {
     const enemy = new Enemy(starDestroyer, "star-destroyer");
     this.allEnemies.push(enemy);
   }
+
+  stopAnimateAll() {
+    this.allEnemies.forEach((enemy) => enemy.explosionOfEnemyShip());
+    this.enemiesBombs.forEach((bomb) => bomb.bombExplosion());
+    this.enemiesMissiles.forEach((missile) => missile.deleteMissile());
+  }
 }
 
 export const enemies = new Enemies();

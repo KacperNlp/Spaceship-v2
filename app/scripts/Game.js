@@ -45,6 +45,7 @@ class Game extends BindToHtml {
     this.#checksPositionsOfBombs();
     this.#checksIsPlayerLostLive();
     this.#checksScoreToIncreaseDifficulty();
+    this.#checksEndOfGame();
 
     requestAnimationFrame(this.#renderGameMap);
   };
@@ -269,6 +270,18 @@ class Game extends BindToHtml {
     ) {
       return true;
     }
+  }
+
+  #checksEndOfGame() {
+    if (this.#gameState.lives <= 0) {
+      clearInterval(this.enemiesGeneratorInterval);
+      this.#stopAnimateAll();
+    }
+  }
+
+  #stopAnimateAll() {
+    this.#player.missiles.forEach((missile) => missile.deleteMissile());
+    enemies.stopAnimateAll();
   }
 }
 
