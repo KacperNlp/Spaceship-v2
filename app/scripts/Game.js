@@ -192,7 +192,7 @@ class Game extends BindToHtml {
       const bombPosition = {
         left: bomb.posX,
         right: bomb.posX + BOMB_SIZE,
-        bottom: bomb.posY - BOMB_SIZE,
+        bottom: bomb.posY + BOMB_SIZE,
         top: bomb.posY,
       };
 
@@ -262,6 +262,7 @@ class Game extends BindToHtml {
       playerLeft <= enemyRight &&
       playerRight >= enemyLeft
     ) {
+      console.log(playerPositions, enemyBombPositins);
       enemyBomb.bombExplosion();
       enemyBombs.splice(enemyBombId, 1);
       this.#gameState.decreaseLives();
