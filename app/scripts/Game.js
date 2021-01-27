@@ -4,6 +4,7 @@ import { enemies } from "./Enemies.js";
 import { GameState } from "./GameState.js";
 import { MISSILE_SIZE } from "./Missile.js";
 import { BOMB_SIZE } from "./Bomb.js";
+import { store } from "./Store.js";
 
 const GAME_LAYER_ID = "game";
 const GAME_MAP_ID = "game-map";
@@ -22,6 +23,7 @@ class Game extends BindToHtml {
   }
 
   newGame() {
+    store.generateStore();
     enemies.createEnemy();
     this.#player = new Player();
     this.#gameState = new GameState();
