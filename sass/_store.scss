@@ -48,11 +48,13 @@
     border: 2px solid $fontColor;
   }
 
-  &__allies-name {
+  &__name {
     font-size: 1.5rem;
   }
 
   &__img {
+    width: 80px;
+    height: 80px;
     & img {
       width: 80px;
       height: 80px;
