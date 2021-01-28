@@ -1,7 +1,7 @@
 export class GameState {
   #lives = 3;
   #points = 0;
-  #diamonds = 0;
+  #diamonds = 5000;
   #timeToRenderNewEnemy = 1200;
   #requireScoreToNextLevel = 50;
 

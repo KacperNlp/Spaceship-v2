@@ -132,7 +132,7 @@ export class ShipInStore {
   }
 
   #buttonHandle = () => {
-    const { active, unlocked, cost, src, hp, speed } = this.props;
+    const { active, unlocked, cost, src, hp, speed, doubleShot } = this.props;
     const playerWallet = game.gameState.diamonds;
 
     if (!active && !unlocked && playerWallet >= cost) {
@@ -149,7 +149,7 @@ export class ShipInStore {
         }
       });
       console.log(src, speed, hp);
-      game.changeTypeOfShip(src, speed, hp);
+      game.changeTypeOfShip(src, speed, doubleShot, hp);
     }
   };
 }

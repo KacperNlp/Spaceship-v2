@@ -47,9 +47,11 @@ class Store extends BindToHtml {
 
   #generateSection(arrayFromData, sectionId, arrayForProducts) {
     const sectionContainer = this.bindById(sectionId);
+    //clear html
     while (sectionContainer.firstChild) {
       sectionContainer.removeChild(sectionContainer.lastChild);
     }
+    arrayForProducts.length = 0; //clear array
 
     arrayFromData.forEach((ship) => {
       const shipInStore = new ShipInStore(ship);

@@ -154,10 +154,11 @@ class Game extends BindToHtml {
     let typeOfShip = {};
 
     store.playerShipsArray.forEach((ship) => {
-      const { active, unlocked, src, speed } = ship.props;
+      const { active, unlocked, src, speed, doubleShot } = ship.props;
       if (active && unlocked) {
         typeOfShip.src = src;
         typeOfShip.speed = speed;
+        typeOfShip.doubleShot = doubleShot;
       }
     });
 
@@ -297,9 +298,9 @@ class Game extends BindToHtml {
     }
   }
 
-  changeTypeOfShip(src, speed, hp) {
+  changeTypeOfShip(src, speed, doubleShot, hp) {
     console.log(src, speed, hp);
-    this.#player.setTypeOfShip(src, speed);
+    this.#player.setTypeOfShip(src, speed, doubleShot);
     this.gameState.lives = hp;
   }
 

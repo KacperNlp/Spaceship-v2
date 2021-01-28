@@ -7,11 +7,14 @@ const POSITION_FROM_BOTTOM = 100;
 export const SHIP_SIZE = 64;
 
 export class Player {
-  constructor({ src, speed }) {
+  constructor({ src, speed, doubleShot }) {
     this.posX = 0;
     this.ship = document.getElementById(PLAYER_SHIP_ID);
-    this.src = src;
-    this.speed = speed;
+    this.props = {
+      src,
+      speed,
+      doubleShot,
+    };
     this.movement = {
       rightArrow: false,
       leftArrow: false,
@@ -26,9 +29,15 @@ export class Player {
     this.setTypeOfShip();
   }
 
-  setTypeOfShip(src = this.src, speed = this.speed) {
-    this.src = src;
-    this.speed = speed;
+  setTypeOfShip(
+    src = this.props.src,
+    speed = this.props.speed,
+    doubleShot = this.props.doubleShot
+  ) {
+    this.props.src = src;
+    this.props.speed = speed;
+    this.props.doubleShot = doubleShot;
+
     this.ship.style.backgroundImage = `url(${src})`;
   }
 
@@ -74,35 +83,61 @@ export class Player {
           break;
 
         case 32:
-          this.#shot();
+          this.#handleShot();
           break;
 
         case 38:
-          this.#shot();
+          this.#handleShot();
           break;
       }
     });
   }
 
   #shipMovesRightLeft = () => {
+    const { speed } = this.props;
     const { innerWidth } = window;
     const { leftArrow, rightArrow } = this.movement;
     const rightMapBorder = innerWidth - SHIP_SIZE;
 
     if (leftArrow && this.posX > 0) {
-      this.posX -= this.speed;
+      this.posX -= speed;
       this.ship.style.left = `${this.posX}px`;
     } else if (rightArrow && this.posX < rightMapBorder) {
-      this.posX += this.speed;
+      this.posX += speed;
       this.ship.style.left = `${this.posX}px`;
     }
 
     requestAnimationFrame(this.#shipMovesRightLeft);
   };
 
-  #shot() {
+  #handleShot() {
+    const { doubleShot } = this.props;
+
+    if (doubleShot) {
+      this.#handleDoubleShot();
+    } else {
+      this.#handleSingleShot();
+    }
+  }
+
+  #handleDoubleShot() {
+    const posY = this.ship.offsetTop - MISSILE_SIZE;
+
+    const firstShotPosX = this.posX + SHIP_SIZE - MISSILE_SIZE; /// 3;
+    const secondShotPosX = this.posX; // + SHIP_SIZE / 2;
+
+    this.#shot(firstShotPosX, posY);
+    this.#shot(secondShotPosX, posY);
+  }
+
+  #handleSingleShot() {
     const posY = this.ship.offsetTop - MISSILE_SIZE;
     const posX = this.posX + (SHIP_SIZE - MISSILE_SIZE) / 2;
+
+    this.#shot(posX, posY);
+  }
+
+  #shot(posX, posY) {
     const missile = new Missile(posX, posY, PLAYER_MISSILE_CLASS);
     this.missiles.push(missile);
   }
