@@ -7,6 +7,7 @@ import { MISSILE_SIZE, Missile } from "./Missile.js";
 const MAXIMUM_POSITION_FROM_BOTTOM = 30;
 const TIME_TO_USE_SKILL = 1500;
 const TIME_FOR_MOVE_ANIMATION = 30;
+const TIMER_OF_EXPLOSION_ANIMATION = 1000;
 const TYPES_OF_ALLIES = { fighter: "fighter", destroyer: "destroyer" };
 
 export class Ally {
@@ -156,6 +157,18 @@ export class Ally {
   #shot(posX, posY) {
     const missile = new Missile(posX, posY, PLAYER_MISSILE_CLASS);
     allies.alliesMissiles.push(missile);
+  }
+
+  explosionOfEnemyShip() {
+    const { shipClass, explosionClass } = this.props;
+    this.element.classList.remove(shipClass);
+    this.element.classList.add(explosionClass);
+    this.#stopAnimate();
+    setTimeout(() => this.#removeAlly(), TIMER_OF_EXPLOSION_ANIMATION);
+  }
+
+  #removeAlly() {
+    this.ship.remove();
   }
 
   #stopAnimate() {
