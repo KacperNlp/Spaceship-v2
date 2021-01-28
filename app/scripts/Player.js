@@ -5,12 +5,13 @@ export const PLAYER_MISSILE_CLASS = "missile";
 const PLAYER_SHIP_ID = "player";
 const POSITION_FROM_BOTTOM = 100;
 export const SHIP_SIZE = 64;
-const SHIP_SPEED = 10;
 
 export class Player {
-  constructor() {
+  constructor({ src, speed }) {
     this.posX = 0;
     this.ship = document.getElementById(PLAYER_SHIP_ID);
+    this.src = src;
+    this.speed = speed;
     this.movement = {
       rightArrow: false,
       leftArrow: false,
@@ -22,6 +23,13 @@ export class Player {
   #init() {
     this.#setStartingPosition();
     this.#shipHandle();
+    this.setTypeOfShip();
+  }
+
+  setTypeOfShip(src = this.src, speed = this.speed) {
+    this.src = src;
+    this.speed = speed;
+    this.ship.style.backgroundImage = `url(${src})`;
   }
 
   #setStartingPosition() {
@@ -82,10 +90,10 @@ export class Player {
     const rightMapBorder = innerWidth - SHIP_SIZE;
 
     if (leftArrow && this.posX > 0) {
-      this.posX -= SHIP_SPEED;
+      this.posX -= this.speed;
       this.ship.style.left = `${this.posX}px`;
     } else if (rightArrow && this.posX < rightMapBorder) {
-      this.posX += SHIP_SPEED;
+      this.posX += this.speed;
       this.ship.style.left = `${this.posX}px`;
     }
 

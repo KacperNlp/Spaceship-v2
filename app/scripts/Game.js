@@ -5,37 +5,41 @@ import { GameState } from "./GameState.js";
 import { MISSILE_SIZE } from "./Missile.js";
 import { BOMB_SIZE } from "./Bomb.js";
 import { store } from "./Store.js";
+import { visibilityOfLayers, VISIBLE_LAYER } from "./VisibilityOfLayers.js";
 
 const GAME_LAYER_ID = "game";
 const GAME_MAP_ID = "game-map";
+const OPEN_STORE_BUTTON_ID = "open-store-button";
 const PLAYER_LIVES_CONTAINER_ID = "player-lives";
 const PLAYER_SCORE_CONTAINER_ID = "player-score";
 const PLAYER_WALLET_CONTAINER_ID = "player-diamonds";
 
 class Game extends BindToHtml {
   #player = null;
-  #gameState = null;
 
   constructor() {
     super(GAME_LAYER_ID);
     this.gameMap = this.bindById(GAME_MAP_ID);
     this.enemiesGeneratorInterval = null;
+    this.gameState = null;
   }
 
   newGame() {
     store.generateStore();
+    const typeOfShip = this.#getShipType();
     enemies.createEnemy();
-    this.#player = new Player();
-    this.#gameState = new GameState();
+    this.#player = new Player(typeOfShip);
+    this.gameState = new GameState();
 
     this.#enemiesGenerator();
     this.#renderGameMap();
+    this.#handleOpenStoreButton();
   }
 
   #enemiesGenerator() {
     this.enemiesGeneratorInterval = setInterval(
       enemies.createEnemy,
-      this.#gameState.timeToRenderNewEnemy
+      this.gameState.timeToRenderNewEnemy
     );
   }
 
@@ -50,14 +54,21 @@ class Game extends BindToHtml {
     requestAnimationFrame(this.#renderGameMap);
   };
 
+  #handleOpenStoreButton() {
+    const button = this.bindById(OPEN_STORE_BUTTON_ID);
+    button.addEventListener("click", () => {
+      visibilityOfLayers.changeVisibilityOfLayer(store.layer, VISIBLE_LAYER);
+    });
+  }
+
   #updatePlayerStats() {
     const livesContainer = this.bindById(PLAYER_LIVES_CONTAINER_ID);
     const pointsContainer = this.bindById(PLAYER_SCORE_CONTAINER_ID);
     const walletContainer = this.bindById(PLAYER_WALLET_CONTAINER_ID);
 
-    livesContainer.textContent = this.#gameState.lives;
-    pointsContainer.textContent = this.#gameState.points;
-    walletContainer.textContent = this.#gameState.diamonds;
+    livesContainer.textContent = this.gameState.lives;
+    pointsContainer.textContent = this.gameState.points;
+    walletContainer.textContent = this.gameState.diamonds;
   }
 
   #checksPositionOfEnemies() {
@@ -93,8 +104,8 @@ class Game extends BindToHtml {
             enemy.explosionOfEnemyShip();
             enemies.splice(enemyId, 1);
 
-            this.#gameState.increasePoints(pointsForDestroy);
-            this.#gameState.increaseDiamonds(prizeForDestroy);
+            this.gameState.increasePoints(pointsForDestroy);
+            this.gameState.increaseDiamonds(prizeForDestroy);
           }
         }
       });
@@ -139,19 +150,33 @@ class Game extends BindToHtml {
     this.#enemyPassesPlayerDefense();
   }
 
+  #getShipType() {
+    let typeOfShip = {};
+
+    store.playerShipsArray.forEach((ship) => {
+      const { active, unlocked, src, speed } = ship.props;
+      if (active && unlocked) {
+        typeOfShip.src = src;
+        typeOfShip.speed = speed;
+      }
+    });
+
+    return typeOfShip;
+  }
+
   //change difficulty means deacrease time to render enemy and create boss (huge ship - star destroyer)
   #checksScoreToIncreaseDifficulty() {
-    const currentScore = this.#gameState.points;
-    const requiredScore = this.#gameState.requireScoreToNextLevel;
+    const currentScore = this.gameState.points;
+    const requiredScore = this.gameState.requireScoreToNextLevel;
 
     if (currentScore >= requiredScore) {
       clearInterval(this.timeToRenderNewEnemy);
-      this.#gameState.updateRequireScoreToNextLevel();
-      this.#gameState.decreaseTimeToRenderNewEnemy();
+      this.gameState.updateRequireScoreToNextLevel();
+      this.gameState.decreaseTimeToRenderNewEnemy();
 
       this.timeToRenderNewEnemy = setInterval(
         enemies.createEnemy(),
-        this.#gameState.timeToRenderNewEnemy
+        this.gameState.timeToRenderNewEnemy
       );
       enemies.createStarDestroyer();
     }
@@ -176,7 +201,7 @@ class Game extends BindToHtml {
       if (isHit) {
         missile.deleteMissile();
         missiles.splice(id, 1);
-        this.#gameState.decreaseLives();
+        this.gameState.decreaseLives();
       }
     });
   }
@@ -200,7 +225,7 @@ class Game extends BindToHtml {
       if (isHit) {
         bomb.bombExplosion();
         bombs.splice(id, 1);
-        this.#gameState.decreaseLives();
+        this.gameState.decreaseLives();
       }
     });
   }
@@ -215,7 +240,7 @@ class Game extends BindToHtml {
         enemy.enemyIsOutsideMap();
 
         //player lost live
-        this.#gameState.decreaseLives();
+        this.gameState.decreaseLives();
       }
     });
   }
@@ -272,8 +297,14 @@ class Game extends BindToHtml {
     }
   }
 
+  changeTypeOfShip(src, speed, hp) {
+    console.log(src, speed, hp);
+    this.#player.setTypeOfShip(src, speed);
+    this.gameState.lives = hp;
+  }
+
   #checksEndOfGame() {
-    if (this.#gameState.lives <= 0) {
+    if (this.gameState.lives <= 0) {
       clearInterval(this.enemiesGeneratorInterval);
       this.#stopAnimateAll();
     }

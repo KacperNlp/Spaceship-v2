@@ -1,5 +1,6 @@
 import { tagsGenerator } from "./TagsGenerator.js";
-import { LIST_OF_CLASS } from "./Store.js";
+import { LIST_OF_CLASS, store } from "./Store.js";
+import { game } from "./Game.js";
 
 export class ShipInStore {
   constructor({
@@ -15,7 +16,7 @@ export class ShipInStore {
     cost,
     src,
   }) {
-    this.product = {
+    this.props = {
       shipClass,
       explosionClass,
       name,
@@ -55,7 +56,7 @@ export class ShipInStore {
 
   #imageGenerator() {
     const { image } = LIST_OF_CLASS;
-    const { src } = this.product;
+    const { src } = this.props;
 
     const imgContainer = tagsGenerator.createTag("div");
     imgContainer.classList.add(image);
@@ -68,7 +69,7 @@ export class ShipInStore {
   }
 
   #nameGenerator() {
-    const { name } = this.product;
+    const { name } = this.props;
     const { nameClass } = LIST_OF_CLASS;
 
     const nameContainer = tagsGenerator.createTag("p");
@@ -80,7 +81,7 @@ export class ShipInStore {
 
   #statsGenerator() {
     const { statsContainerClass, statClass } = LIST_OF_CLASS;
-    const { hp, speed, doubleShot, active } = this.product;
+    const { hp, speed, doubleShot, active } = this.props;
 
     const stats = [
       { txt: "HP: ", value: hp },
@@ -112,7 +113,7 @@ export class ShipInStore {
 
   #buttonGenerator() {
     const { globalButtonClass, storeButton } = LIST_OF_CLASS;
-    const { active, unlocked, cost } = this.product;
+    const { active, unlocked, cost } = this.props;
 
     const button = tagsGenerator.createTag("button");
     button.setAttribute("class", `${globalButtonClass} ${storeButton}`);
@@ -125,6 +126,30 @@ export class ShipInStore {
       button.textContent = `Buy! (cost: ${cost})`;
     }
 
+    button.addEventListener("click", this.#buttonHandle);
+
     return button;
   }
+
+  #buttonHandle = () => {
+    const { active, unlocked, cost, src, hp, speed } = this.props;
+    const playerWallet = game.gameState.diamonds;
+
+    if (!active && !unlocked && playerWallet >= cost) {
+      this.props.unlocked = true;
+      game.gameState.decreaseDiamonds(cost);
+    } else if (!active && unlocked) {
+      this.props.active = true;
+
+      store.playerShipsArray.forEach((ship) => {
+        const { name } = ship.props;
+
+        if (name !== this.props.name) {
+          ship.props.active = false;
+        }
+      });
+      console.log(src, speed, hp);
+      game.changeTypeOfShip(src, speed, hp);
+    }
+  };
 }

@@ -14,6 +14,7 @@
       position: absolute;
       background-image: url("../assets/enemies/explosions/small-explosion.png");
       animation: smallExplosion 1s steps(17) forwards;
+      z-index: 4;
     }
   }
 
@@ -31,6 +32,7 @@
       position: absolute;
       background-image: url("../assets/enemies/explosions/destroyer-explosion.png");
       animation: mediumExplosion 1s steps(17) forwards;
+      z-index: 2;
     }
   }
 
@@ -49,6 +51,7 @@
       position: absolute;
       background-image: url("../assets/enemies/explosions/small-explosion.png");
       animation: smallExplosion 1s steps(17) forwards;
+      z-index: 4;
     }
   }
 
@@ -68,6 +71,7 @@
       position: absolute;
       background-image: url("../assets/enemies/explosions/destroyer-explosion.png");
       animation: mediumExplosion 1s steps(17) forwards;
+      z-index: 3;
     }
   }
 
@@ -87,6 +91,7 @@
       position: absolute;
       background-image: url("../assets/enemies/explosions/big_explosion.png");
       animation: starDestroyerExplosion 1s steps(17) forwards;
+      z-index: 1;
     }
   }
 
@@ -114,6 +119,7 @@
       position: absolute;
       background-image: url("../assets/enemies/explosions/small-explosion.png");
       animation: smallExplosion 1s steps(17) forwards;
+      z-index: 2;
     }
   }
 }

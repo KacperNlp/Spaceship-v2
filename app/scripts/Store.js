@@ -2,7 +2,9 @@ import { BindToHtml } from "./BindToHtml.js";
 import { tagsGenerator } from "./TagsGenerator.js";
 import { ShipInStore } from "./ShipInStore.js";
 import { PRODUCTS_IN_STORE } from "../data/storeProducts.js";
+import { HIDDEN_LAYER, visibilityOfLayers } from "./VisibilityOfLayers.js";
 
+const CLOSE_BUTTON_ID = "close-store";
 const HEART_ICON = { fas: "fas", heart: "fa-heart" };
 export const LIST_OF_CLASS = {
   nameClass: "store__name",
@@ -40,6 +42,7 @@ class Store extends BindToHtml {
       this.alliesShipsArray
     );
     this.#generateLivesSection(live);
+    this.#handleCloseStoreButton();
   }
 
   #generateSection(arrayFromData, sectionId, arrayForProducts) {
@@ -77,6 +80,13 @@ class Store extends BindToHtml {
     container.appendChild(heartIcon);
     container.appendChild(button);
     liveSection.appendChild(container);
+  }
+
+  #handleCloseStoreButton() {
+    const button = this.bindById(CLOSE_BUTTON_ID);
+    button.addEventListener("click", () => {
+      visibilityOfLayers.changeVisibilityOfLayer(this.layer, HIDDEN_LAYER);
+    });
   }
 }
 
