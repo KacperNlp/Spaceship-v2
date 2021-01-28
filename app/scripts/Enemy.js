@@ -15,6 +15,8 @@ export const ENEMY_MISSILE_CLASS = "enemy-missile";
 export const ENEMY_BOMB_CLASS = "enemy-bomb";
 const ENEMY_EXPLOSION_BOMB_CLASS = "enemy-bomb--explosion";
 const TIMER_OF_EXPLOSION_ANIMATION = 1000;
+const TIME_TO_USE_SKILL = 2000;
+const TIME_FOR_MOVE_ANIMATION = 30;
 
 export class Enemy {
   constructor(
@@ -65,7 +67,10 @@ export class Enemy {
     this.element.classList.add(shipClass);
 
     game.gameMap.appendChild(this.element);
-    this.interval = setInterval(this.#enemyMoveAnimation, 30);
+    this.interval = setInterval(
+      this.#enemyMoveAnimation,
+      TIME_FOR_MOVE_ANIMATION
+    );
     this.#skillForEnemyByType();
   }
 
@@ -78,11 +83,14 @@ export class Enemy {
 
   #skillForEnemyByType() {
     if (this.type === ENEMY_TYPES[0]) {
-      this.skillInterval = setInterval(this.#fighterShot, 2000);
+      this.skillInterval = setInterval(this.#fighterShot, TIME_TO_USE_SKILL);
     } else if (this.type === ENEMY_TYPES[1]) {
-      this.skillInterval = setInterval(this.#plantBomb, 2000);
+      this.skillInterval = setInterval(this.#plantBomb, TIME_TO_USE_SKILL);
     } else if (this.type === ENEMY_TYPES[2]) {
-      this.skillInterval = setInterval(this.#destroyerDoubleShot, 2000);
+      this.skillInterval = setInterval(
+        this.#destroyerDoubleShot,
+        TIME_TO_USE_SKILL
+      );
     }
   }
 

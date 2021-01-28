@@ -18,6 +18,10 @@ export const LIST_OF_CLASS = {
 };
 const LIVES_SECTION_ID = "store-lives";
 const STORE_LAYER_ID = "store";
+export const STORE_SECTIONS = {
+  player: "player-ships-section",
+  allies: "allies-section",
+};
 const PLAYER_ALLIES_SECTION_ID = "store-player-allies";
 const PLAYER_SHIPS_SECTION_ID = "store-player-ships";
 
@@ -30,22 +34,25 @@ class Store extends BindToHtml {
 
   generateStore() {
     const { ships, allies, live } = PRODUCTS_IN_STORE;
+    const { player: playerSection, allies: alliesSection } = STORE_SECTIONS;
 
     this.#generateSection(
       ships,
       PLAYER_SHIPS_SECTION_ID,
-      this.playerShipsArray
+      this.playerShipsArray,
+      playerSection
     );
     this.#generateSection(
       allies,
       PLAYER_ALLIES_SECTION_ID,
-      this.alliesShipsArray
+      this.alliesShipsArray,
+      alliesSection
     );
     this.#generateLivesSection(live);
     this.#handleCloseStoreButton();
   }
 
-  #generateSection(arrayFromData, sectionId, arrayForProducts) {
+  #generateSection(arrayFromData, sectionId, arrayForProducts, typeOfSection) {
     const sectionContainer = this.bindById(sectionId);
     //clear html
     while (sectionContainer.firstChild) {
@@ -54,7 +61,7 @@ class Store extends BindToHtml {
     arrayForProducts.length = 0; //clear array
 
     arrayFromData.forEach((ship) => {
-      const shipInStore = new ShipInStore(ship);
+      const shipInStore = new ShipInStore(ship, typeOfSection);
       sectionContainer.appendChild(shipInStore.container);
 
       arrayForProducts.push(shipInStore);

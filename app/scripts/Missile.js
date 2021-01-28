@@ -1,5 +1,5 @@
 import { tagsGenerator } from "./TagsGenerator.js";
-import { SHIP_SIZE, PLAYER_MISSILE_CLASS } from "./Player.js";
+import { PLAYER_MISSILE_CLASS } from "./Player.js";
 import { ENEMY_MISSILE_CLASS } from "./Enemy.js";
 import { game } from "./Game.js";
 

@@ -57,7 +57,7 @@ export const PRODUCTS_IN_STORE = {
     {
       shipClass: "allies-destroyer",
       shipExplosionClass: "allies-destroyer--explosion",
-      name: "fighter",
+      name: "destroyer",
       size: 128,
       hp: 3,
       speed: 2,

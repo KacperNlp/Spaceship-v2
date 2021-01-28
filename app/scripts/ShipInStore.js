@@ -1,21 +1,25 @@
 import { tagsGenerator } from "./TagsGenerator.js";
-import { LIST_OF_CLASS, store } from "./Store.js";
+import { LIST_OF_CLASS, store, STORE_SECTIONS } from "./Store.js";
 import { game } from "./Game.js";
+import { allies } from "./Allies.js";
 
 export class ShipInStore {
-  constructor({
-    shipClass,
-    explosionClass,
-    name,
-    hp,
-    size,
-    speed,
-    doubleShot,
-    unlocked,
-    active,
-    cost,
-    src,
-  }) {
+  constructor(
+    {
+      shipClass,
+      explosionClass,
+      name,
+      hp,
+      size,
+      speed,
+      doubleShot,
+      unlocked,
+      active,
+      cost,
+      src,
+    },
+    section
+  ) {
     this.props = {
       shipClass,
       explosionClass,
@@ -30,6 +34,7 @@ export class ShipInStore {
       src,
     };
     this.container;
+    this.sectionInStore = section;
 
     this.#containerInitialSettings();
   }
@@ -132,10 +137,20 @@ export class ShipInStore {
   }
 
   #buttonHandle = () => {
-    const { active, unlocked, cost, src, hp, speed, doubleShot } = this.props;
+    const { player: playerSection, allies: alliesSection } = STORE_SECTIONS;
     const playerWallet = game.gameState.diamonds;
 
-    if (!active && !unlocked && playerWallet >= cost) {
+    if (playerSection === this.sectionInStore) {
+      this.#hanldeForPlayerSection(playerWallet);
+    } else if (alliesSection === this.sectionInStore) {
+      this.#handleForAlliesSection(playerWallet);
+    }
+  };
+
+  #hanldeForPlayerSection(wallet) {
+    const { active, unlocked, cost, src, hp, speed, doubleShot } = this.props;
+
+    if (!active && !unlocked && wallet >= cost) {
       this.props.unlocked = true;
       game.gameState.decreaseDiamonds(cost);
     } else if (!active && unlocked) {
@@ -148,8 +163,18 @@ export class ShipInStore {
           ship.props.active = false;
         }
       });
+
       console.log(src, speed, hp);
       game.changeTypeOfShip(src, speed, doubleShot, hp);
     }
-  };
+  }
+
+  #handleForAlliesSection(wallet) {
+    const { name, cost } = this.props;
+    console.log(name);
+
+    if (wallet >= cost) {
+      allies.createAlly(name);
+    }
+  }
 }

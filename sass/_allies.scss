@@ -1,0 +1,36 @@
+.allies {
+  &-fighter {
+    width: 64px;
+    height: 64px;
+    position: absolute;
+    background-image: url("../assets/allies/fighter/allies-fighter-sprite.png");
+    animation: fighterAnimation 0.2s steps(5) infinite;
+    z-index: 4;
+
+    &--explosion {
+      width: 64px;
+      height: 64px;
+      position: absolute;
+      background-image: url("../assets/enemies/explosions/small-explosion.png");
+      animation: smallExplosion 1s steps(17) forwards;
+      z-index: 4;
+    }
+  }
+
+  &-destroyer {
+    width: 128px;
+    height: 128px;
+    position: absolute;
+    background-image: url("../assets/allies/destroyer/allies-destroyer-sprite.png");
+    animation: destroyerAnimation 0.3s steps(9) infinite;
+    z-index: 2;
+    &--explosion {
+      width: 128px;
+      height: 128px;
+      position: absolute;
+      background-image: url("../assets/enemies/explosions/destroyer-explosion.png");
+      animation: mediumExplosion 1s steps(17) forwards;
+      z-index: 2;
+    }
+  }
+}
