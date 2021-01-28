@@ -6,6 +6,7 @@ import { MISSILE_SIZE } from "./Missile.js";
 import { BOMB_SIZE } from "./Bomb.js";
 import { store } from "./Store.js";
 import { visibilityOfLayers, VISIBLE_LAYER } from "./VisibilityOfLayers.js";
+import { allies } from "./Allies.js";
 
 const GAME_LAYER_ID = "game";
 const GAME_MAP_ID = "game-map";
@@ -45,7 +46,8 @@ class Game extends BindToHtml {
 
   #renderGameMap = () => {
     this.#updatePlayerStats();
-    this.#checksPositionOfEnemies();
+    this.#checksPositionOfEnemies(this.#player.missiles);
+    this.#checksPositionOfEnemies(allies.alliesMissiles);
     this.#checksPositionsOfBombs();
     this.#checksIsPlayerLostLive();
     this.#checksScoreToIncreaseDifficulty();
@@ -71,7 +73,7 @@ class Game extends BindToHtml {
     walletContainer.textContent = this.gameState.diamonds;
   }
 
-  #checksPositionOfEnemies() {
+  #checksPositionOfEnemies(alliesMissiles) {
     enemies.allEnemies.forEach((enemy, enemyId, enemies) => {
       const { size } = enemy.ship;
 
@@ -81,7 +83,7 @@ class Game extends BindToHtml {
         enemyBottom: enemy.posY + size,
       };
 
-      this.#player.missiles.forEach((missile, missileId, missiles) => {
+      alliesMissiles.forEach((missile, missileId, missiles) => {
         const missilePosition = {
           missileTopLeft: missile.posX,
           missileTopRight: missile.posX + MISSILE_SIZE,
