@@ -58,56 +58,62 @@ export class Player {
   }
 
   #shipMoveLeftRight() {
-    window.addEventListener("keydown", ({ keyCode }) => {
-      switch (keyCode) {
-        case 37:
-          this.movement.leftArrow = true;
-          break;
-
-        case 39:
-          this.movement.rightArrow = true;
-          break;
-      }
-    });
+    window.addEventListener("keydown", this.#moveLeftRightEvent);
   }
 
   #shipShotAndBlockSpamMovement() {
-    window.addEventListener("keyup", ({ keyCode }) => {
-      switch (keyCode) {
-        case 37:
-          this.movement.leftArrow = false;
-          break;
-
-        case 39:
-          this.movement.rightArrow = false;
-          break;
-
-        case 32:
-          this.#handleShot();
-          break;
-
-        case 38:
-          this.#handleShot();
-          break;
-      }
-    });
+    window.addEventListener("keyup", this.#shotOrStopMoveRightLeftEvent);
   }
 
   #shipMovesRightLeft = () => {
-    const { speed } = this.props;
-    const { innerWidth } = window;
-    const { leftArrow, rightArrow } = this.movement;
-    const rightMapBorder = innerWidth - SHIP_SIZE;
+    if (game.isInGame) {
+      const { speed } = this.props;
+      const { innerWidth } = window;
+      const { leftArrow, rightArrow } = this.movement;
+      const rightMapBorder = innerWidth - SHIP_SIZE;
 
-    if (leftArrow && this.posX > 0) {
-      this.posX -= speed;
-      this.ship.style.left = `${this.posX}px`;
-    } else if (rightArrow && this.posX < rightMapBorder) {
-      this.posX += speed;
-      this.ship.style.left = `${this.posX}px`;
+      if (leftArrow && this.posX > 0) {
+        this.posX -= speed;
+        this.ship.style.left = `${this.posX}px`;
+      } else if (rightArrow && this.posX < rightMapBorder) {
+        this.posX += speed;
+        this.ship.style.left = `${this.posX}px`;
+      }
+
+      requestAnimationFrame(this.#shipMovesRightLeft);
     }
+  };
 
-    requestAnimationFrame(this.#shipMovesRightLeft);
+  #moveLeftRightEvent = ({ keyCode }) => {
+    switch (keyCode) {
+      case 37:
+        this.movement.leftArrow = true;
+        break;
+
+      case 39:
+        this.movement.rightArrow = true;
+        break;
+    }
+  };
+
+  #shotOrStopMoveRightLeftEvent = ({ keyCode }) => {
+    switch (keyCode) {
+      case 37:
+        this.movement.leftArrow = false;
+        break;
+
+      case 39:
+        this.movement.rightArrow = false;
+        break;
+
+      case 32:
+        this.#handleShot();
+        break;
+
+      case 38:
+        this.#handleShot();
+        break;
+    }
   };
 
   #handleShot() {
@@ -141,5 +147,10 @@ export class Player {
     game.gameState.increaseNumberOfFiredMissiles();
     const missile = new Missile(posX, posY, PLAYER_MISSILE_CLASS);
     this.missiles.push(missile);
+  }
+
+  removePlayer() {
+    window.removeEventListener("keydown", this.#moveLeftRightEvent);
+    window.removeEventListener("keyup", this.#shotOrStopMoveRightLeftEvent);
   }
 }

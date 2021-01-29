@@ -349,6 +349,7 @@ class Game extends BindToHtml {
       clearInterval(this.enemiesGeneratorInterval);
       const recordIsBreak = this.#isRecordBeenBroken();
       this.#stopAnimateAll();
+
       this.isInGame = false;
 
       const score = this.gameState.points;
@@ -379,8 +380,10 @@ class Game extends BindToHtml {
 
   #stopAnimateAll() {
     this.#player.missiles.forEach((missile) => missile.deleteMissile());
+    this.#player.removePlayer();
     enemies.stopAnimateAll();
     allies.deleteAllAlliesShips();
+    clearInterval(this.enemiesGeneratorInterval);
   }
 }
 
