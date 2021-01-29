@@ -20,7 +20,7 @@ class MainMenu extends BindToHtml {
 
   #init() {
     this.#buttonsHandle();
-    this.#setHighestScore();
+    this.setHighestScore();
   }
 
   #buttonsHandle() {
@@ -28,7 +28,7 @@ class MainMenu extends BindToHtml {
     this.#settingsButtonHanlde();
   }
 
-  #setHighestScore() {
+  setHighestScore() {
     const container = this.bindById(HIGHEST_SCORE_CONTAINER_ID);
     const score = storage.getHighestScore();
 

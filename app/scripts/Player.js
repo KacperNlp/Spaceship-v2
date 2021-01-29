@@ -138,6 +138,7 @@ export class Player {
   }
 
   #shot(posX, posY) {
+    game.gameState.increaseNumberOfFiredMissiles();
     const missile = new Missile(posX, posY, PLAYER_MISSILE_CLASS);
     this.missiles.push(missile);
   }

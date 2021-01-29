@@ -8,6 +8,7 @@ import { store } from "./Store.js";
 import { visibilityOfLayers, VISIBLE_LAYER } from "./VisibilityOfLayers.js";
 import { allies } from "./Allies.js";
 import { storage } from "./Storage.js";
+import { message } from "./Message.js";
 
 const GAME_LAYER_ID = "game";
 const GAME_MAP_ID = "game-map";
@@ -24,9 +25,11 @@ class Game extends BindToHtml {
     this.gameMap = this.bindById(GAME_MAP_ID);
     this.enemiesGeneratorInterval = null;
     this.gameState = null;
+    this.isInGame;
   }
 
   newGame() {
+    this.isInGame = true;
     store.generateStore();
     const typeOfShip = this.#getShipType();
     enemies.createEnemy();
@@ -46,17 +49,19 @@ class Game extends BindToHtml {
   }
 
   #renderGameMap = () => {
-    this.#updatePlayerStats();
-    this.#checksPositionOfEnemies(this.#player.missiles);
-    this.#checksPositionOfEnemies(allies.alliesMissiles);
-    this.#checksPositionsOfBombs(this.#player.missiles);
-    this.#checksPositionsOfBombs(allies.alliesMissiles);
-    this.#checksIsPlayerLostLive();
-    this.#checksIsAllyLostLive();
-    this.#checksScoreToIncreaseDifficulty();
-    this.#checksEndOfGame();
+    if (this.isInGame) {
+      this.#updatePlayerStats();
+      this.#checksPositionOfEnemies(this.#player.missiles);
+      this.#checksPositionOfEnemies(allies.alliesMissiles);
+      this.#checksPositionsOfBombs(this.#player.missiles);
+      this.#checksPositionsOfBombs(allies.alliesMissiles);
+      this.#checksIsPlayerLostLive();
+      this.#checksIsAllyLostLive();
+      this.#checksScoreToIncreaseDifficulty();
+      this.#checksEndOfGame();
 
-    requestAnimationFrame(this.#renderGameMap);
+      requestAnimationFrame(this.#renderGameMap);
+    }
   };
 
   #handleOpenStoreButton() {
@@ -111,6 +116,7 @@ class Game extends BindToHtml {
 
             this.gameState.increasePoints(pointsForDestroy);
             this.gameState.increaseDiamonds(prizeForDestroy);
+            this.gameState.increaseNumberOfDestroyedEnemies();
           }
         }
       });
@@ -341,8 +347,22 @@ class Game extends BindToHtml {
   #checksEndOfGame() {
     if (this.gameState.lives <= 0) {
       clearInterval(this.enemiesGeneratorInterval);
-      this.#isRecordBeenBroken();
+      const recordIsBreak = this.#isRecordBeenBroken();
       this.#stopAnimateAll();
+      this.isInGame = false;
+
+      const score = this.gameState.points;
+      const numberOfDestroyedEnemeis = this.gameState.getNumberOfDestroyedEnemies();
+      const numberOfFiredMissiles = this.gameState.getNumberOfFiredMissiles();
+
+      message.setMessage(
+        score,
+        numberOfDestroyedEnemeis,
+        numberOfFiredMissiles,
+        recordIsBreak
+      );
+
+      visibilityOfLayers.changeVisibilityOfLayer(message.layer, VISIBLE_LAYER);
     }
   }
 
@@ -351,7 +371,10 @@ class Game extends BindToHtml {
 
     if (previousScore < this.gameState.points) {
       storage.setHighestScore(this.gameState.points);
+      return true;
     }
+
+    return false;
   }
 
   #stopAnimateAll() {

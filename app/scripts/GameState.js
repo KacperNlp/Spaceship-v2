@@ -4,6 +4,8 @@ export class GameState {
   #diamonds = 5000;
   #timeToRenderNewEnemy = 1200;
   #requireScoreToNextLevel = 50;
+  #numberOfDestroyedEnemies = 0;
+  #numberOfFiredMissiles = 0;
 
   get lives() {
     return this.#lives;
@@ -57,5 +59,21 @@ export class GameState {
 
   updateRequireScoreToNextLevel() {
     this.#requireScoreToNextLevel += 100;
+  }
+
+  increaseNumberOfDestroyedEnemies() {
+    this.#numberOfDestroyedEnemies++;
+  }
+
+  getNumberOfDestroyedEnemies() {
+    return this.#numberOfDestroyedEnemies;
+  }
+
+  increaseNumberOfFiredMissiles() {
+    this.#numberOfFiredMissiles++;
+  }
+
+  getNumberOfFiredMissiles() {
+    return this.#numberOfFiredMissiles;
   }
 }
