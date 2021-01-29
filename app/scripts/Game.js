@@ -7,6 +7,7 @@ import { BOMB_SIZE } from "./Bomb.js";
 import { store } from "./Store.js";
 import { visibilityOfLayers, VISIBLE_LAYER } from "./VisibilityOfLayers.js";
 import { allies } from "./Allies.js";
+import { storage } from "./Storage.js";
 
 const GAME_LAYER_ID = "game";
 const GAME_MAP_ID = "game-map";
@@ -341,7 +342,16 @@ class Game extends BindToHtml {
   #checksEndOfGame() {
     if (this.gameState.lives <= 0) {
       clearInterval(this.enemiesGeneratorInterval);
+      this.#isRecordBeenBroken();
       this.#stopAnimateAll();
+    }
+  }
+
+  #isRecordBeenBroken() {
+    const previousScore = storage.getHighestScore();
+
+    if (previousScore < this.gameState.points) {
+      storage.setHighestScore(this.gameState.points);
     }
   }
 

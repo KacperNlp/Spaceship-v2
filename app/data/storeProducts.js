@@ -51,7 +51,7 @@ export const PRODUCTS_IN_STORE = {
       doubleShot: false,
       unlocked: false,
       active: false,
-      cost: 100,
+      cost: 50,
       src: "/assets/allies/fighter.png",
     },
     {
@@ -64,7 +64,7 @@ export const PRODUCTS_IN_STORE = {
       doubleShot: true,
       unlocked: false,
       active: false,
-      cost: 200,
+      cost: 100,
       src: "/assets/allies/spaceship_enemy.png",
     },
   ],

@@ -5,7 +5,9 @@ import {
   VISIBLE_LAYER,
 } from "./VisibilityOfLayers.js";
 import { game } from "./Game.js";
+import { storage } from "./Storage.js";
 
+const HIGHEST_SCORE_CONTAINER_ID = "main-menu-highest-score";
 const MAIN_MENU_LAYER_ID = "main-menu-layer";
 const NEW_GAME_BUTTON_ID = "new-game-main-menu";
 const SETTINGS_BUTTON_ID = "settings-main-menu";
@@ -18,11 +20,19 @@ class MainMenu extends BindToHtml {
 
   #init() {
     this.#buttonsHandle();
+    this.#setHighestScore();
   }
 
   #buttonsHandle() {
     this.#newGameButtonHandle();
     this.#settingsButtonHanlde();
+  }
+
+  #setHighestScore() {
+    const container = this.bindById(HIGHEST_SCORE_CONTAINER_ID);
+    const score = storage.getHighestScore();
+
+    container.textContent = score;
   }
 
   #newGameButtonHandle() {
