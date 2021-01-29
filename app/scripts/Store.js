@@ -3,6 +3,7 @@ import { tagsGenerator } from "./TagsGenerator.js";
 import { ShipInStore } from "./ShipInStore.js";
 import { PRODUCTS_IN_STORE } from "../data/storeProducts.js";
 import { HIDDEN_LAYER, visibilityOfLayers } from "./VisibilityOfLayers.js";
+import { game } from "./Game.js";
 
 const CLOSE_BUTTON_ID = "close-store";
 const HEART_ICON = { fas: "fas", heart: "fa-heart" };
@@ -89,6 +90,8 @@ class Store extends BindToHtml {
     container.appendChild(heartIcon);
     container.appendChild(button);
     liveSection.appendChild(container);
+
+    button.addEventListener("click", () => this.#handleButtonForBuyLive(cost));
   }
 
   #handleCloseStoreButton() {
@@ -96,6 +99,14 @@ class Store extends BindToHtml {
     button.addEventListener("click", () => {
       visibilityOfLayers.changeVisibilityOfLayer(this.layer, HIDDEN_LAYER);
     });
+  }
+
+  #handleButtonForBuyLive(cost) {
+    const playerWallet = game.gameState.diamonds;
+    if (playerWallet >= cost) {
+      game.gameState.increaseLives();
+      game.gameState.decreaseDiamonds(cost);
+    }
   }
 }
 

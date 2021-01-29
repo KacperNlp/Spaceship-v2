@@ -22,6 +22,14 @@ class Allies {
     const ally = new Ally(allyProps);
     this.alliesShips.push(ally);
   }
+
+  deleteAllAlliesShips() {
+    this.alliesShips.forEach((ship) => {
+      ship.explosion();
+    });
+
+    this.alliesShips.length = 0;
+  }
 }
 
 export const allies = new Allies();

@@ -164,14 +164,12 @@ export class ShipInStore {
         }
       });
 
-      console.log(src, speed, hp);
       game.changeTypeOfShip(src, speed, doubleShot, hp);
     }
   }
 
   #handleForAlliesSection(wallet) {
     const { name, cost } = this.props;
-    console.log(name);
 
     if (wallet >= cost) {
       allies.createAlly(name);

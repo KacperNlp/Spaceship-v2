@@ -334,7 +334,6 @@ class Game extends BindToHtml {
   }
 
   changeTypeOfShip(src, speed, doubleShot, hp) {
-    console.log(src, speed, hp);
     this.#player.setTypeOfShip(src, speed, doubleShot);
     this.gameState.lives = hp;
   }
@@ -358,6 +357,7 @@ class Game extends BindToHtml {
   #stopAnimateAll() {
     this.#player.missiles.forEach((missile) => missile.deleteMissile());
     enemies.stopAnimateAll();
+    allies.deleteAllAlliesShips();
   }
 }
 
