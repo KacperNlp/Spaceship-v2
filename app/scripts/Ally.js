@@ -159,10 +159,11 @@ export class Ally {
     allies.alliesMissiles.push(missile);
   }
 
-  explosionOfEnemyShip() {
+  explosion() {
     const { shipClass, explosionClass } = this.props;
-    this.element.classList.remove(shipClass);
-    this.element.classList.add(explosionClass);
+
+    this.ship.classList.remove(shipClass);
+    this.ship.classList.add(explosionClass);
     this.#stopAnimate();
     setTimeout(() => this.#removeAlly(), TIMER_OF_EXPLOSION_ANIMATION);
   }

@@ -2,7 +2,7 @@ export const PRODUCTS_IN_STORE = {
   ships: [
     {
       shipClass: null,
-      shipExplosionClass: null,
+      explosionClass: null,
       name: "XIJN",
       size: 64,
       hp: 3,
@@ -15,7 +15,7 @@ export const PRODUCTS_IN_STORE = {
     },
     {
       shipClass: null,
-      shipExplosionClass: null,
+      explosionClass: null,
       name: "Eagle",
       size: 64,
       hp: 4,
@@ -28,7 +28,7 @@ export const PRODUCTS_IN_STORE = {
     },
     {
       shipClass: null,
-      shipExplosionClass: null,
+      explosionClass: null,
       name: "Creep",
       size: 64,
       hp: 5,
@@ -43,7 +43,7 @@ export const PRODUCTS_IN_STORE = {
   allies: [
     {
       shipClass: "allies-fighter",
-      shipExplosionClass: "allies-fighter--explosion",
+      explosionClass: "allies-fighter--explosion",
       name: "fighter",
       size: 64,
       hp: 1,
@@ -56,7 +56,7 @@ export const PRODUCTS_IN_STORE = {
     },
     {
       shipClass: "allies-destroyer",
-      shipExplosionClass: "allies-destroyer--explosion",
+      explosionClass: "allies-destroyer--explosion",
       name: "destroyer",
       size: 128,
       hp: 3,

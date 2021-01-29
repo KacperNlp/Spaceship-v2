@@ -48,8 +48,10 @@ class Game extends BindToHtml {
     this.#updatePlayerStats();
     this.#checksPositionOfEnemies(this.#player.missiles);
     this.#checksPositionOfEnemies(allies.alliesMissiles);
-    this.#checksPositionsOfBombs();
+    this.#checksPositionsOfBombs(this.#player.missiles);
+    this.#checksPositionsOfBombs(allies.alliesMissiles);
     this.#checksIsPlayerLostLive();
+    this.#checksIsAllyLostLive();
     this.#checksScoreToIncreaseDifficulty();
     this.#checksEndOfGame();
 
@@ -114,7 +116,7 @@ class Game extends BindToHtml {
     });
   }
 
-  #checksPositionsOfBombs() {
+  #checksPositionsOfBombs(alliesMissiles) {
     enemies.enemiesBombs.forEach((bomb, bombId, bombs) => {
       const bombPosition = {
         enemyBottomLeft: bomb.posX,
@@ -122,7 +124,7 @@ class Game extends BindToHtml {
         enemyBottom: bomb.posY + BOMB_SIZE,
       };
 
-      this.#player.missiles.forEach((missile, missileId, missiles) => {
+      alliesMissiles.forEach((missile, missileId, missiles) => {
         const missilePosition = {
           missileTopLeft: missile.posX,
           missileTopRight: missile.posX + MISSILE_SIZE,
@@ -147,9 +149,17 @@ class Game extends BindToHtml {
   }
 
   #checksIsPlayerLostLive() {
-    this.#lostLiveByEnemyMissile();
-    this.#lostLiveByEnemyBomb();
+    this.#lostLiveByEnemyMissile(this.#player, SHIP_SIZE, true);
+    this.#lostLiveByEnemyBomb(this.#player, SHIP_SIZE, true);
     this.#enemyPassesPlayerDefense();
+  }
+
+  #checksIsAllyLostLive() {
+    allies.alliesShips.forEach((ship, id) => {
+      const { size } = ship.props;
+      this.#lostLiveByEnemyMissile(ship, size, false, id);
+      this.#lostLiveByEnemyBomb(ship, size, false, id);
+    });
   }
 
   #getShipType() {
@@ -185,7 +195,7 @@ class Game extends BindToHtml {
     }
   }
 
-  #lostLiveByEnemyMissile() {
+  #lostLiveByEnemyMissile(ship, size, isPlayerShip, allyId) {
     enemies.enemiesMissiles.forEach((missile, id, missiles) => {
       const missilePosition = {
         enemyLeft: missile.posX,
@@ -194,22 +204,33 @@ class Game extends BindToHtml {
         enemyTop: missile.posY,
       };
 
-      const playerShip = this.#takeAlliedShipPosition(this.#player, SHIP_SIZE);
+      const allyShip = this.#takeAlliedShipPosition(ship, size);
 
       const isHit = this.#checksPositionOfAlliedShipAndEnemyElement(
-        playerShip,
+        allyShip,
         missilePosition
       );
 
       if (isHit) {
         missile.deleteMissile();
         missiles.splice(id, 1);
-        this.gameState.decreaseLives();
+
+        if (isPlayerShip) {
+          this.gameState.decreaseLives();
+        } else {
+          ship.props.hp--;
+          const { hp } = ship.props;
+
+          if (!hp) {
+            ship.explosion();
+            allies.alliesShips.splice(allyId, 1);
+          }
+        }
       }
     });
   }
 
-  #lostLiveByEnemyBomb() {
+  #lostLiveByEnemyBomb(ship, size, isPlayerShip, allyId) {
     enemies.enemiesBombs.forEach((bomb, id, bombs) => {
       const bombPosition = {
         enemyLeft: bomb.posX,
@@ -218,17 +239,28 @@ class Game extends BindToHtml {
         enemyTop: bomb.posY,
       };
 
-      const playerShip = this.#takeAlliedShipPosition(this.#player, SHIP_SIZE);
+      const allyShip = this.#takeAlliedShipPosition(ship, size);
 
       const isHit = this.#checksPositionOfAlliedShipAndEnemyElement(
-        playerShip,
+        allyShip,
         bombPosition
       );
 
       if (isHit) {
         bomb.bombExplosion();
         bombs.splice(id, 1);
-        this.gameState.decreaseLives();
+
+        if (isPlayerShip) {
+          this.gameState.decreaseLives();
+        } else {
+          ship.props.hp--;
+          const { hp } = ship.props;
+
+          if (!hp) {
+            ship.explosion();
+            allies.alliesShips.splice(allyId, 1);
+          }
+        }
       }
     });
   }
