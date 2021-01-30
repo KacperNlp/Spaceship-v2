@@ -172,6 +172,7 @@ export class ShipInStore {
     const { name, cost } = this.props;
 
     if (wallet >= cost) {
+      game.gameState.decreaseDiamonds(cost);
       allies.createAlly(name);
     }
   }

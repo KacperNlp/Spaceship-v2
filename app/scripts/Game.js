@@ -104,12 +104,13 @@ class Game extends BindToHtml {
         );
 
         //hit the enemy
-        if (isHit) {
+        if (isHit && enemy.posY >= 0 && missile.posY >= 0) {
           missile.deleteMissile();
           missiles.splice(missileId, 1);
           enemy.ship.hp--;
           //explosion if enemy lost all hp
           if (!enemy.ship.hp) {
+            console.log(enemyPosition, missilePosition);
             const { prizeForDestroy, pointsForDestroy } = enemy.ship;
             enemy.explosionOfEnemyShip();
             enemies.splice(enemyId, 1);
@@ -193,6 +194,7 @@ class Game extends BindToHtml {
       clearInterval(this.timeToRenderNewEnemy);
       this.gameState.updateRequireScoreToNextLevel();
       this.gameState.decreaseTimeToRenderNewEnemy();
+      console.log(game.gameState.timeToRenderNewEnemy);
 
       this.timeToRenderNewEnemy = setInterval(
         enemies.createEnemy(),
@@ -203,6 +205,7 @@ class Game extends BindToHtml {
   }
 
   #lostLiveByEnemyMissile(ship, size, isPlayerShip, allyId) {
+    const { innerHeight } = window;
     enemies.enemiesMissiles.forEach((missile, id, missiles) => {
       const missilePosition = {
         enemyLeft: missile.posX,
@@ -218,7 +221,7 @@ class Game extends BindToHtml {
         missilePosition
       );
 
-      if (isHit) {
+      if (isHit && ship.posY < innerHeight && missile.posY < innerHeight) {
         missile.deleteMissile();
         missiles.splice(id, 1);
 
@@ -238,6 +241,7 @@ class Game extends BindToHtml {
   }
 
   #lostLiveByEnemyBomb(ship, size, isPlayerShip, allyId) {
+    const { innerHeight } = window;
     enemies.enemiesBombs.forEach((bomb, id, bombs) => {
       const bombPosition = {
         enemyLeft: bomb.posX,
@@ -253,7 +257,7 @@ class Game extends BindToHtml {
         bombPosition
       );
 
-      if (isHit) {
+      if (isHit && ship.posY < innerHeight && bomb.posY < innerHeight) {
         bomb.bombExplosion();
         bombs.splice(id, 1);
 
