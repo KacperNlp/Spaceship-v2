@@ -55,12 +55,15 @@ class GameAudio {
 
   changeGameSound(volume) {
     this.bombExplosion.volume = volume;
-    this.bigExplosion.volume = volume;
     this.lostLiveSound = volume;
     this.diamondsSound.volume = volume;
     this.mediumExplosion.volume = volume;
     this.smallExplosion.volume = volume;
     this.soundForTheEndOfGame.volume = volume;
+  }
+
+  changeMusicVolume(volume) {
+    this.bacgroundMusic.volume = volume;
   }
 
   playMusic() {

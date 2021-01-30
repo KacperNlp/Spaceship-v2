@@ -6,6 +6,7 @@ import {
 } from "./VisibilityOfLayers.js";
 import { game } from "./Game.js";
 import { storage } from "./Storage.js";
+import { settings } from "./Settings.js";
 
 const HIGHEST_SCORE_CONTAINER_ID = "main-menu-highest-score";
 const MAIN_MENU_LAYER_ID = "main-menu-layer";
@@ -47,7 +48,7 @@ class MainMenu extends BindToHtml {
   #settingsButtonHanlde() {
     const button = this.bindById(SETTINGS_BUTTON_ID);
     button.addEventListener("click", () => {
-      console.log("works");
+      visibilityOfLayers.changeVisibilityOfLayer(settings.layer, VISIBLE_LAYER);
     });
   }
 }
