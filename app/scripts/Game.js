@@ -9,6 +9,7 @@ import { visibilityOfLayers, VISIBLE_LAYER } from "./VisibilityOfLayers.js";
 import { allies } from "./Allies.js";
 import { storage } from "./Storage.js";
 import { message } from "./Message.js";
+import { gameAudio } from "./GameAudio.js";
 
 const GAME_LAYER_ID = "game";
 const GAME_MAP_ID = "game-map";
@@ -110,10 +111,10 @@ class Game extends BindToHtml {
           enemy.ship.hp--;
           //explosion if enemy lost all hp
           if (!enemy.ship.hp) {
-            console.log(enemyPosition, missilePosition);
             const { prizeForDestroy, pointsForDestroy } = enemy.ship;
             enemy.explosionOfEnemyShip();
             enemies.splice(enemyId, 1);
+            gameAudio.explosionSound(enemy.type);
 
             this.gameState.increasePoints(pointsForDestroy);
             this.gameState.increaseDiamonds(prizeForDestroy);
@@ -145,7 +146,8 @@ class Game extends BindToHtml {
         );
 
         //hit the enemy
-        if (isHit) {
+        if (isHit && bomb.posY >= 0 && missile.posY >= 0) {
+          gameAudio.playBombExplosion();
           missile.deleteMissile();
           missiles.splice(missileId, 1);
 
@@ -226,12 +228,14 @@ class Game extends BindToHtml {
         missiles.splice(id, 1);
 
         if (isPlayerShip) {
+          gameAudio.playLostLiveSound();
           this.gameState.decreaseLives();
         } else {
           ship.props.hp--;
           const { hp } = ship.props;
 
           if (!hp) {
+            gameAudio.explosionSound(ship.props.name);
             ship.explosion();
             allies.alliesShips.splice(allyId, 1);
           }
@@ -260,8 +264,10 @@ class Game extends BindToHtml {
       if (isHit && ship.posY < innerHeight && bomb.posY < innerHeight) {
         bomb.bombExplosion();
         bombs.splice(id, 1);
+        gameAudio.playBombExplosion();
 
         if (isPlayerShip) {
+          gameAudio.playLostLiveSound();
           this.gameState.decreaseLives();
         } else {
           ship.props.hp--;
@@ -284,6 +290,7 @@ class Game extends BindToHtml {
       if (innerHeight < enemy.posY - size) {
         enemies.splice(id, 1);
         enemy.enemyIsOutsideMap();
+        gameAudio.playLostLiveSound();
 
         //player lost live
         this.gameState.decreaseLives();
@@ -353,6 +360,8 @@ class Game extends BindToHtml {
       clearInterval(this.enemiesGeneratorInterval);
       const recordIsBreak = this.#isRecordBeenBroken();
       this.#stopAnimateAll();
+      gameAudio.playSoundForTheEndGame();
+      gameAudio.pauseMusic();
 
       this.isInGame = false;
 

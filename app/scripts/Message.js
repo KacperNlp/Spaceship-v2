@@ -1,5 +1,6 @@
 import { BindToHtml } from "./BindToHtml.js";
 import { game } from "./Game.js";
+import { gameAudio } from "./GameAudio.js";
 import { mainMenu } from "./MainMenu.js";
 import {
   HIDDEN_LAYER,
@@ -47,6 +48,7 @@ class Message extends BindToHtml {
     const button = this.bindById(MESSAGE_CLOSE_BUTTON_ID);
     button.addEventListener("click", () => {
       mainMenu.setHighestScore();
+      gameAudio.playMusic();
 
       visibilityOfLayers.changeVisibilityOfLayer(this.layer, HIDDEN_LAYER);
       visibilityOfLayers.changeVisibilityOfLayer(game.layer, HIDDEN_LAYER);

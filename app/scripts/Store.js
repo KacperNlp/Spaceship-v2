@@ -4,6 +4,7 @@ import { ShipInStore } from "./ShipInStore.js";
 import { PRODUCTS_IN_STORE } from "../data/storeProducts.js";
 import { HIDDEN_LAYER, visibilityOfLayers } from "./VisibilityOfLayers.js";
 import { game } from "./Game.js";
+import { gameAudio } from "./GameAudio.js";
 
 const CLOSE_BUTTON_ID = "close-store";
 const HEART_ICON = { fas: "fas", heart: "fa-heart" };
@@ -104,6 +105,7 @@ class Store extends BindToHtml {
   #handleButtonForBuyLive(cost) {
     const playerWallet = game.gameState.diamonds;
     if (playerWallet >= cost) {
+      gameAudio.playDiamondsSound();
       game.gameState.increaseLives();
       game.gameState.decreaseDiamonds(cost);
     }

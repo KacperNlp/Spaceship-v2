@@ -99,5 +99,15 @@
     height: 50px;
     border-radius: 50%;
     cursor: pointer;
+    border: 2px solid $fontColor;
+    color: $fontColor;
+    background-color: $siteBackground;
+    outline: transparent;
+    transition: 0.3s;
+
+    &:hover {
+      color: $siteBackground;
+      background: $fontColor;
+    }
   }
 }

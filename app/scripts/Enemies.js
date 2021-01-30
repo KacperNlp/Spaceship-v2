@@ -1,4 +1,5 @@
 import { Enemy } from "./Enemy.js";
+import { gameAudio } from "./GameAudio.js";
 
 const KIND_OF_ENEMIES = {
   fighter: {
@@ -51,6 +52,13 @@ const KIND_OF_ENEMIES = {
     pointsForDestroy: 15,
   },
 };
+export const TYPE_OF_ENEMIES = {
+  fighter: "fighter",
+  destroyer: "destroyer",
+  bomber: "bomber",
+  commanderShip: "commanderShip",
+  starDestroyer: "star-destroyer",
+};
 const RATE_OF_DRAW = 100;
 
 class Enemies {
@@ -63,42 +71,45 @@ class Enemies {
   createEnemy = () => {
     const randomNumber = Math.floor(Math.random() * RATE_OF_DRAW + 1);
     const { fighter, destroyer, bomber, commanderShip } = KIND_OF_ENEMIES;
+    const {
+      fighter: fighterType,
+      destroyer: destroyerType,
+      bomber: bomberType,
+      commanderShip: commanderShipType,
+    } = TYPE_OF_ENEMIES;
     let enemy;
-    let type;
 
     if (
       randomNumber >= fighter.chancesToDraw[0] &&
       randomNumber <= fighter.chancesToDraw[1]
     ) {
-      type = "fighter";
-      enemy = new Enemy(fighter, type);
+      enemy = new Enemy(fighter, fighterType);
     } else if (
       randomNumber >= destroyer.chancesToDraw[0] &&
       randomNumber <= destroyer.chancesToDraw[1]
     ) {
-      type = "destroyer";
-      enemy = new Enemy(destroyer, type);
+      enemy = new Enemy(destroyer, destroyerType);
     } else if (
       randomNumber >= bomber.chancesToDraw[0] &&
       randomNumber <= bomber.chancesToDraw[1]
     ) {
-      type = "bomber";
-      enemy = new Enemy(bomber, type);
+      enemy = new Enemy(bomber, bomberType);
     } else if (
       randomNumber >= commanderShip.chancesToDraw[0] &&
       randomNumber <= commanderShip.chancesToDraw[1]
     ) {
-      type = "commanderShip";
-      enemy = new Enemy(commanderShip, type);
+      enemy = new Enemy(commanderShip, commanderShipType);
     }
 
     this.allEnemies.push(enemy);
   };
 
   createStarDestroyer() {
+    const { starDestroyer: starDestroyerType } = TYPE_OF_ENEMIES;
     const { starDestroyer } = KIND_OF_ENEMIES;
-    const enemy = new Enemy(starDestroyer, "star-destroyer");
+    const enemy = new Enemy(starDestroyer, starDestroyerType);
     this.allEnemies.push(enemy);
+    gameAudio.playAlarm();
   }
 
   stopAnimateAll() {

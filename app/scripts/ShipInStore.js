@@ -2,6 +2,7 @@ import { tagsGenerator } from "./TagsGenerator.js";
 import { LIST_OF_CLASS, store, STORE_SECTIONS } from "./Store.js";
 import { game } from "./Game.js";
 import { allies } from "./Allies.js";
+import { gameAudio } from "./GameAudio.js";
 
 export class ShipInStore {
   constructor(
@@ -155,6 +156,7 @@ export class ShipInStore {
       game.gameState.decreaseDiamonds(cost);
     } else if (!active && unlocked) {
       this.props.active = true;
+      gameAudio.playAlliesArrive();
 
       store.playerShipsArray.forEach((ship) => {
         const { name } = ship.props;
@@ -173,6 +175,7 @@ export class ShipInStore {
 
     if (wallet >= cost) {
       game.gameState.decreaseDiamonds(cost);
+      gameAudio.playAlliesArrive();
       allies.createAlly(name);
     }
   }
