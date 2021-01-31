@@ -110,6 +110,26 @@ class Store extends BindToHtml {
       game.gameState.decreaseDiamonds(cost);
     }
   }
+
+  updateStore() {
+    this.playerShipsArray.forEach((ship) => {
+      const { active, unlocked, cost } = ship.props;
+
+      while (ship.statsContainer.firstChild) {
+        ship.statsContainer.removeChild(ship.statsContainer.lastChild);
+      }
+
+      ship.generateStats();
+
+      if (unlocked && active) {
+        ship.button.textContent = "You're using this ship!";
+      } else if (unlocked && !active) {
+        ship.button.textContent = "Take this!";
+      } else {
+        ship.button.textContent = `Buy! (cost: ${cost})`;
+      }
+    });
+  }
 }
 
 export const store = new Store();

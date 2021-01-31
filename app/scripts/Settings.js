@@ -13,8 +13,8 @@ const TYPE_OF_BARS = {
 };
 
 class Settings extends BindToHtml {
-  #gameSoundsVolume = 0;
-  #musicVolume = 0;
+  #gameSoundsVolume = 0.3;
+  #musicVolume = 0.3;
 
   constructor() {
     super(SETTINGS_LAYER_ID);

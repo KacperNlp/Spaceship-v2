@@ -27,13 +27,13 @@
 
   &__game-button {
     padding: 10px;
+    z-index: 10;
   }
 
   &--return {
     position: absolute;
     top: 80px;
     right: 10px;
-    z-index: 5;
   }
 
   &--settings-in-game {

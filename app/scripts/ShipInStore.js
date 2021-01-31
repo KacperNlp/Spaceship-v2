@@ -21,6 +21,8 @@ export class ShipInStore {
     },
     section
   ) {
+    this.button = null;
+    this.statsContainer = null;
     this.props = {
       shipClass,
       explosionClass,
@@ -86,55 +88,34 @@ export class ShipInStore {
   }
 
   #statsGenerator() {
-    const { statsContainerClass, statClass } = LIST_OF_CLASS;
-    const { hp, speed, doubleShot, active } = this.props;
+    const { statsContainerClass } = LIST_OF_CLASS;
 
-    const stats = [
-      { txt: "HP: ", value: hp },
-      { txt: "Speed: ", value: speed },
-      { txt: "Double shot: ", value: doubleShot },
-      { txt: "Active: ", value: active },
-    ];
+    this.statsContainer = tagsGenerator.createTag("div");
+    this.statsContainer.classList.add(statsContainerClass);
 
-    const statsContainer = tagsGenerator.createTag("div");
-    statsContainer.classList.add(statsContainerClass);
+    this.generateStats();
 
-    for (let i = 0; i < stats.length; i++) {
-      const statContainer = tagsGenerator.createTag("div");
-      statContainer.classList.add(statClass);
-
-      const textContainer = tagsGenerator.createTag("p");
-      const valueContainer = tagsGenerator.createTag("p");
-
-      textContainer.textContent = stats[i].txt;
-      valueContainer.textContent = stats[i].value;
-
-      statContainer.appendChild(textContainer);
-      statContainer.appendChild(valueContainer);
-      statsContainer.appendChild(statContainer);
-    }
-
-    return statsContainer;
+    return this.statsContainer;
   }
 
   #buttonGenerator() {
     const { globalButtonClass, storeButton } = LIST_OF_CLASS;
     const { active, unlocked, cost } = this.props;
 
-    const button = tagsGenerator.createTag("button");
-    button.setAttribute("class", `${globalButtonClass} ${storeButton}`);
+    this.button = tagsGenerator.createTag("button");
+    this.button.setAttribute("class", `${globalButtonClass} ${storeButton}`);
 
     if (active && unlocked) {
-      button.textContent = `You're using this ship!`;
+      this.button.textContent = `You're using this ship!`;
     } else if (!active && unlocked) {
-      button.textContent = "Take this!";
+      this.button.textContent = "Take this!";
     } else if (!active && !unlocked) {
-      button.textContent = `Buy! (cost: ${cost})`;
+      this.button.textContent = `Buy! (cost: ${cost})`;
     }
 
-    button.addEventListener("click", this.#buttonHandle);
+    this.button.addEventListener("click", this.#buttonHandle);
 
-    return button;
+    return this.button;
   }
 
   #buttonHandle = () => {
@@ -154,6 +135,7 @@ export class ShipInStore {
     if (!active && !unlocked && wallet >= cost) {
       this.props.unlocked = true;
       game.gameState.decreaseDiamonds(cost);
+      store.updateStore();
     } else if (!active && unlocked) {
       this.props.active = true;
       gameAudio.playAlliesArrive();
@@ -164,6 +146,8 @@ export class ShipInStore {
         if (name !== this.props.name) {
           ship.props.active = false;
         }
+
+        store.updateStore();
       });
 
       game.changeTypeOfShip(src, speed, doubleShot, hp);
@@ -177,6 +161,33 @@ export class ShipInStore {
       game.gameState.decreaseDiamonds(cost);
       gameAudio.playAlliesArrive();
       allies.createAlly(name);
+    }
+  }
+
+  generateStats() {
+    const { statClass } = LIST_OF_CLASS;
+    const { hp, speed, doubleShot, active } = this.props;
+
+    const stats = [
+      { txt: "HP: ", value: hp },
+      { txt: "Speed: ", value: speed },
+      { txt: "Double shot: ", value: doubleShot },
+      { txt: "Active: ", value: active },
+    ];
+
+    for (let i = 0; i < stats.length; i++) {
+      const statContainer = tagsGenerator.createTag("div");
+      statContainer.classList.add(statClass);
+
+      const textContainer = tagsGenerator.createTag("p");
+      const valueContainer = tagsGenerator.createTag("p");
+
+      textContainer.textContent = stats[i].txt;
+      valueContainer.textContent = stats[i].value;
+
+      statContainer.appendChild(textContainer);
+      statContainer.appendChild(valueContainer);
+      this.statsContainer.appendChild(statContainer);
     }
   }
 }
