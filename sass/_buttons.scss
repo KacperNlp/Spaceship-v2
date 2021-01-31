@@ -24,4 +24,21 @@
     font-size: 3rem;
     z-index: 10;
   }
+
+  &__game-button {
+    padding: 10px;
+  }
+
+  &--return {
+    position: absolute;
+    top: 80px;
+    right: 10px;
+    z-index: 5;
+  }
+
+  &--settings-in-game {
+    position: absolute;
+    top: 145px;
+    right: 10px;
+  }
 }

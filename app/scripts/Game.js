@@ -5,11 +5,17 @@ import { GameState } from "./GameState.js";
 import { MISSILE_SIZE } from "./Missile.js";
 import { BOMB_SIZE } from "./Bomb.js";
 import { store } from "./Store.js";
-import { visibilityOfLayers, VISIBLE_LAYER } from "./VisibilityOfLayers.js";
+import {
+  HIDDEN_LAYER,
+  visibilityOfLayers,
+  VISIBLE_LAYER,
+} from "./VisibilityOfLayers.js";
 import { allies } from "./Allies.js";
 import { storage } from "./Storage.js";
 import { message } from "./Message.js";
 import { gameAudio } from "./GameAudio.js";
+import { mainMenu } from "./MainMenu.js";
+import { settings } from "./Settings.js";
 
 const GAME_LAYER_ID = "game";
 const GAME_MAP_ID = "game-map";
@@ -17,6 +23,8 @@ const OPEN_STORE_BUTTON_ID = "open-store-button";
 const PLAYER_LIVES_CONTAINER_ID = "player-lives";
 const PLAYER_SCORE_CONTAINER_ID = "player-score";
 const PLAYER_WALLET_CONTAINER_ID = "player-diamonds";
+const RETURN_BUTTON_ID = "return";
+const SETTINGS_BUTTON_ID = "settings-in-game";
 
 class Game extends BindToHtml {
   #player = null;
@@ -27,6 +35,29 @@ class Game extends BindToHtml {
     this.enemiesGeneratorInterval = null;
     this.gameState = null;
     this.isInGame;
+    this.#returnAndSettingsHandle();
+  }
+
+  #returnAndSettingsHandle() {
+    this.#handleReturnButton();
+    this.#handleSettingsButton();
+  }
+
+  #handleReturnButton() {
+    const button = this.bindById(RETURN_BUTTON_ID);
+    button.addEventListener("click", () => {
+      this.#stopAnimateAll();
+
+      visibilityOfLayers.changeVisibilityOfLayer(this.layer, HIDDEN_LAYER);
+      visibilityOfLayers.changeVisibilityOfLayer(mainMenu.layer, VISIBLE_LAYER);
+    });
+  }
+
+  #handleSettingsButton() {
+    const button = this.bindById(SETTINGS_BUTTON_ID);
+    button.addEventListener("click", () => {
+      visibilityOfLayers.changeVisibilityOfLayer(settings.layer, VISIBLE_LAYER);
+    });
   }
 
   newGame() {

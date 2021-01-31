@@ -36,7 +36,7 @@ export const PRODUCTS_IN_STORE = {
       doubleShot: true,
       unlocked: false,
       active: false,
-      cost: 1500,
+      cost: 1000,
       src: "/assets/player/tier2.png",
     },
   ],

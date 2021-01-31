@@ -54,8 +54,9 @@ class GameAudio {
   }
 
   changeGameSound(volume) {
+    this.alarm.volume = volume;
     this.bombExplosion.volume = volume;
-    this.lostLiveSound = volume;
+    this.lostLiveSound.volume = volume;
     this.diamondsSound.volume = volume;
     this.mediumExplosion.volume = volume;
     this.smallExplosion.volume = volume;

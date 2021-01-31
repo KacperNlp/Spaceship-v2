@@ -13,8 +13,8 @@ const TYPE_OF_BARS = {
 };
 
 class Settings extends BindToHtml {
-  #gameSoundsVolume = 0.3;
-  #musicVolume = 0.3;
+  #gameSoundsVolume = 0;
+  #musicVolume = 0;
 
   constructor() {
     super(SETTINGS_LAYER_ID);
@@ -54,7 +54,6 @@ class Settings extends BindToHtml {
       this.#musicVolume = volume;
       gameAudio.changeMusicVolume(volume);
     } else if (type === gameSounds) {
-      console.log("soudn");
       this.#gameSoundsVolume = volume;
       gameAudio.changeGameSound(volume);
     }
