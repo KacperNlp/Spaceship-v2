@@ -23,7 +23,7 @@ export const PRODUCTS_IN_STORE = {
       doubleShot: false,
       unlocked: false,
       active: false,
-      cost: 500,
+      cost: 300,
       src: "/assets/player/tier5.png",
     },
     {
@@ -36,7 +36,7 @@ export const PRODUCTS_IN_STORE = {
       doubleShot: true,
       unlocked: false,
       active: false,
-      cost: 1000,
+      cost: 800,
       src: "/assets/player/tier2.png",
     },
   ],
@@ -51,7 +51,7 @@ export const PRODUCTS_IN_STORE = {
       doubleShot: false,
       unlocked: false,
       active: false,
-      cost: 50,
+      cost: 20,
       src: "/assets/allies/fighter.png",
     },
     {
@@ -64,11 +64,11 @@ export const PRODUCTS_IN_STORE = {
       doubleShot: true,
       unlocked: false,
       active: false,
-      cost: 100,
+      cost: 10,
       src: "/assets/allies/spaceship_enemy.png",
     },
   ],
   live: {
-    cost: 100,
+    cost: 50,
   },
 };
