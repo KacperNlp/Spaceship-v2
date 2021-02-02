@@ -4,6 +4,7 @@ This game was created as a task from course about OPP in JavaScript on Udemy. In
 ## My Expansion of this project 
 *Store - In my roject I was created a simple store where player can buy allies or unlock new ship with better stats. The last one have double shot.<br/><br/>
 *Allies - Player can buy allies (two types). Allies ships have normal moves to left/right (they change direction of move when they are on map edge) and they shooting (every 1.5 sec).<br/><br/>
+*Shooting by enemies and allies, <br/><br/>
 *Enemies - In this proejct we have got 4 types of enemies and 1 mini boss (he is generated every 100 points).<br/><br/>
 Type of enemies:<br/>
 *fighter - bassic ship, he has only 1hp and he is shooting every 2 sec (only 1 shot),<br/>
@@ -12,6 +13,9 @@ Type of enemies:<br/>
 *commander ship - ship of hight tier, he has 10hp but he doesn't have any speciall skill (this is kind of tank to push line),<br/>
 *star destroyer - mini boss, he has 50hp and doesn't have special skill, he is used as a tank to push the line.<br/>
 <br/><br/>
+
+## LIVE:
+link: https://pedantic-shockley-1def84.netlify.app/
 
 ## Used technologies
 *JavaScript (OPP),<br/>
